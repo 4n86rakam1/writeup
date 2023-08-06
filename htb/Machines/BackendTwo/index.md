@@ -914,7 +914,7 @@ root@kali:~/htb/Machines/BackendTwo# python3 file.py get_file -f /proc/self/cmdl
 There is no information about the source code location.
 It seems possible to look at files under `/proc/`, so I will enumerate `/proc/{pid}/cmdline`.
 
-To save execution time, I can use Python's [ThreadPoolExecutor](https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures. ThreadPoolExecutor) to get `/proc/{pid}/cmdline`.
+To save execution time, I can use Python's [ThreadPoolExecutor](https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor) to get `/proc/{pid}/cmdline`.
 
 <details><summary>part of file.py</summary><p>
 
