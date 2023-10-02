@@ -13,14 +13,14 @@ import math
 import re
 import random
 import string
-from datetime import datetime
+from datetime import datetime, timezone
 
 import requests
 
 
 def generate_seed():
     resp = requests.get(
-        f"https://skribl.chall.pwnoh.io/",
+        "https://skribl.chall.pwnoh.io/",
     )
 
     pattern = r"stime = moment.duration\(([0-9]+), 'seconds'\)"
@@ -28,6 +28,13 @@ def generate_seed():
     duration = int(duration)
 
     created_datetime = math.floor((datetime.now().timestamp() - duration))
+
+    # or I can calculate as considering the timezone from 'Date' response header
+    # current_datetime = datetime.strptime(
+    #     resp.headers["Date"], "%a, %d %b %Y %H:%M:%S %Z"
+    # ).timestamp()
+    # created_datetime = math.floor((current_datetime - duration)) + (60 * 60 * 9)
+
     return created_datetime
 
 
