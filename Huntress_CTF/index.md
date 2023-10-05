@@ -557,3 +557,133 @@ root@kali:~/ctf/HuntressCTF/rita# curl -s https://sketchysite.github.io | html2t
 ****** sketchysite.github.io ******
 flag{8626fe7dcd8d412a80d0b3f0e36afd4a}
 ```
+
+## CaesarMirror
+
+### Description
+
+> Caesar caesar, on the wall, who is the fairest of them all?
+>
+> Perhaps a clever ROT13?
+>
+> NOTE: this flag does not follow the usual MD5 hash standard flag format. It is still wrapped with the code>flag{} prefix and suffix.
+>
+> Download the file(s) below.
+>
+> Attachments: caesarmirror.txt
+
+### Flag
+
+flag{julius_in_a_reflection}
+
+### Solution
+
+```console
+root@kali:~/ctf/HuntressCTF# file caesarmirror.txt
+caesarmirror.txt: ASCII text
+
+root@kali:~/ctf/HuntressCTF# cat caesarmirror.txt
+     Bu obl! Jbj, guvf jnezhc punyyratr fher   bf V !erugrtbg ghc bg ahs sb gby n fnj
+    qrsvavgryl nofbyhgryl nyjnlf ybir gelvat   ftavug rivgnibaav qan jra ch xavug bg
+       gb qb jvgu gur irel onfvp, pbzzba naq   sb genc gfevs ruG !frhdvauprg SGP pvffnyp
+     lbhe synt vf synt{whyvhf_ naq gung vf n   tavuglerir gba fv gv gho gengf gnret
+ gung lbh jvyy arrq gb fbyir guvf punyyratr.    qan rqvu bg tavleg rxvy g'abq V
+  frcnengr rnpu cneg bs gur synt. Gur frpbaq   bq hbl gho _n_av fv tnys rug sb genc
+   arrq whfg n yvggyr ovg zber. Jung rknpgyl   rxnz qan leg bg reru rqhypav rj qyhbuf
+     guvf svyyre grkg ybbx zber ratntvat naq   ?fravyjra qqn rj qyhbuF ?ryvujugebj
+    Fubhyq jr nqq fcnprf naq gel naq znxr vg   uthbar fv fravy lanz jbU ?ynpvegrzzlf
+ gb znxr guvf svyyre grkg ybbx oryvrinoyr? N    n avugvj ferggry sb renhdf qvybf
+ fvzcyr, zbabfcnpr-sbag grkg svyr ybbxf tbbq   rug gn gfbzyn rj reN .rz bg uthbar
+   raq? Vg ybbxf yvxr vg! V ubcr vg vf tbbq.   }abvgprysre fv tnys ehbl sb genc qevug ruG
+naq ng guvf cbvag lbh fubhyq unir rirelguvat   ebs tnys fvug gvzohf bg qrra hbl gnug
+    cbvagf. Gur ortvaavat vf znexrq jvgu gur   ,rpneo lyehp tavarcb rug qan kvsrec tnys
+  naq vg vapyhqrf Ratyvfu jbeqf frcnengrq ol   lyehp tavfbyp n av qar bg ,frebpferqah
+  oenpr. Jbj! Abj GUNG vf n PGS! Jub xarj jr   fvug bg erucvp enfrnp rug xyvz qyhbp
+            rkgrag?? Fbzrbar trg gung Whyvhf   !ynqrz n lht enfrnP
+```
+
+It looks like text is encrypted.
+As the challenge name includes `Caesar`, decrypted as a Caesar cipher.
+
+```console
+root@kali:~/ctf/HuntressCTF# cat caesarmirror.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'
+     Oh boy! Wow, this warmup challenge sure   os I !rehtegot tup ot nuf fo tol a saw
+    definitely absolutely always love trying   sgniht evitavonni dna wen pu kniht ot
+       to do with the very basic, common and   fo trap tsrif ehT !seuqinhcet FTC cissalc
+     your flag is flag{julius_ and that is a   gnihtyreve ton si ti tub trats taerg
+ that you will need to solve this challenge.    dna edih ot gniyrt ekil t'nod I
+  separate each part of the flag. The second   od uoy tub _a_ni si galf eht fo trap
+   need just a little bit more. What exactly   ekam dna yrt ot ereh edulcni ew dluohs
+     this filler text look more engaging and   ?senilwen dda ew dluohS ?elihwhtrow
+    Should we add spaces and try and make it   hguone si senil ynam woH ?lacirtemmys
+ to make this filler text look believable? A    a nihtiw srettel fo erauqs dilos
+ simple, monospace-font text file looks good   eht ta tsomla ew erA .em ot hguone
+   end? It looks like it! I hope it is good.   }noitcelfer si galf ruoy fo trap driht ehT
+and at this point you should have everything   rof galf siht timbus ot deen uoy taht
+    points. The beginning is marked with the   ,ecarb ylruc gninepo eht dna xiferp galf
+  and it includes English words separated by   ylruc gnisolc a ni dne ot ,serocsrednu
+  brace. Wow! Now THAT is a CTF! Who knew we   siht ot rehpic raseac eht klim dluoc
+            extent?? Someone get that Julius   !ladem a yug raseaC
+```
+
+Got 1st part flag: `flag{julius_`.
+Reversed it.
+
+```console
+root@kali:~/ctf/HuntressCTF# cat caesarmirror.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m' | rev
+ was a lot of fun to put together! I so   erus egnellahc pumraw siht ,woW !yob hO
+ to think up new and innovative things   gniyrt evol syawla yletulosba yletinifed
+ classic CTF techniques! The first part of   dna nommoc ,cisab yrev eht htiw od ot
+ great start but it is not everything   a si taht dna _suiluj{galf si galf ruoy
+ I don't like trying to hide and    .egnellahc siht evlos ot deen lliw uoy taht
+ part of the flag is in_a_ but you do   dnoces ehT .galf eht fo trap hcae etarapes
+ should we include here to try and make   yltcaxe tahW .erom tib elttil a tsuj deen
+ worthwhile? Should we add newlines?   dna gnigagne erom kool txet rellif siht
+ symmetrical? How many lines is enough   ti ekam dna yrt dna secaps dda ew dluohS
+ solid square of letters within a    A ?elbaveileb kool txet rellif siht ekam ot
+ enough to me. Are we almost at the   doog skool elif txet tnof-ecapsonom ,elpmis
+ The third part of your flag is reflection}   .doog si ti epoh I !ti ekil skool tI ?dne
+ that you need to submit this flag for   gnihtyreve evah dluohs uoy tniop siht ta dna
+ flag prefix and the opening curly brace,   eht htiw dekram si gninnigeb ehT .stniop
+ underscores, to end in a closing curly   yb detarapes sdrow hsilgnE sedulcni ti dna
+ could milk the caesar cipher to this   ew wenk ohW !FTC a si TAHT woN !woW .ecarb
+ Caesar guy a medal!   suiluJ taht teg enoemoS ??tnetxe
+```
+
+2nd part flag is `in_a_` and 3rd part is `reflection}`.
+Therefore, concat these parts, got flag{julius_in_a_reflection}.
+
+## I Wont Let You Down
+
+### Description
+
+> OK Go take a look at this IP:
+>
+> Connect here: <http://155.138.162.158>
+>
+> **# USING ANY OTHER TOOL OTHER THAN NMAP WILL DISQUALIFY YOU. DON'T USE BURPSUITE, DON'T USE DIRBUSTER. JUST PLAIN NMAP, NO FLAGS!**
+
+### Flag
+
+flag{93671c2c38ee872508770361ace37b02}
+
+### Solution
+
+```console
+root@kali:~/ctf/HuntressCTF# nmap -p- --min-rate 5000 -Pn --open 155.138.162.158
+Starting Nmap 7.94 ( https://nmap.org ) at 2023-10-05 22:05 JST
+Nmap scan report for 155.138.162.158.vultrusercontent.com (155.138.162.158)
+Host is up (0.21s latency).
+Not shown: 63507 closed tcp ports (reset), 2024 filtered tcp ports (no-response)
+Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
+PORT      STATE SERVICE
+22/tcp    open  ssh
+80/tcp    open  http
+8888/tcp  open  sun-answerbook
+42069/tcp open  unknown
+
+Nmap done: 1 IP address (1 host up) scanned in 18.40 seconds
+
+root@kali:~/ctf/HuntressCTF# nc 155.138.162.158 8888 | grep -i flag
+flag{93671c2c38ee872508770361ace37b02}
+```
