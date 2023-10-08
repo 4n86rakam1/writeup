@@ -898,3 +898,59 @@ Content-Length: 69
 root@kali:~/ctf/HuntressCTF# echo -ne 'ZWNobyBmbGFnezYwYmIzYmZhZjcwM2UwZmEzNjczMGFiNzBlMTE1YmQ3fQ==' | base64 -d
 echo flag{60bb3bfaf703e0fa36730ab70e115bd7}
 ```
+
+## Dumpster Fire
+
+### Description
+
+> We found all this data in the dumpster! Can you find anything interesting in here, like any cool passwords or anything? Check it out quick before the foxes get to it!
+>
+> Download the file(s) below.
+>
+> Attachments: dumpster_fire.tar.xz
+
+### Flag
+
+flag{35446041dc161cf5c9c325a3d28af3e3}
+
+### Solution
+
+Dumped password in Firefox Profile directory by using [Firefox Decrypt](https://github.com/unode/firefox_decrypt).
+
+```console
+root@kali:~/ctf/HuntressCTF# mkdir tmp && tar xJf dumpster_fire.tar.xz -C tmp
+
+root@kali:~/ctf/HuntressCTF# git clone https://github.com/unode/firefox_decrypt.git
+(snip)
+root@kali:~/ctf/HuntressCTF# python3 firefox_decrypt/firefox_decrypt.py tmp/home/challenge/.mozilla/firefox/bc1m1zlr.default-release
+2023-10-08 22:13:26,154 - WARNING - profile.ini not found in tmp/home/challenge/.mozilla/firefox/bc1m1zlr.default-release
+2023-10-08 22:13:26,155 - WARNING - Continuing and assuming 'tmp/home/challenge/.mozilla/firefox/bc1m1zlr.default-release' is a profile location
+
+Website:   http://localhost:31337
+Username: 'flag'
+Password: 'flag{35446041dc161cf5c9c325a3d28af3e3}'
+```
+
+## Comprezz
+
+### Description
+
+> Someone stole my S's and replaced them with Z's! Have you ever seen this kind of file before?
+>
+> Download the file(s) below.
+>
+> Attachments: comprezz
+
+### Flag
+
+flag{196a71490b7b55c42bf443274f9ff42b}
+
+### Solution
+
+```console
+root@kali:~/ctf/HuntressCTF# file comprezz
+comprezz: compress'd data 16 bits
+
+root@kali:~/ctf/HuntressCTF# cat comprezz | uncompress
+flag{196a71490b7b55c42bf443274f9ff42b}
+```
