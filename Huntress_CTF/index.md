@@ -954,3 +954,53 @@ comprezz: compress'd data 16 bits
 root@kali:~/ctf/HuntressCTF# cat comprezz | uncompress
 flag{196a71490b7b55c42bf443274f9ff42b}
 ```
+
+## Chicken Wings
+
+### Description
+
+> ordered chicken wings at the local restaurant, but uh... this really isn't what I was expecting...
+>
+> Download the file(s) below.
+>
+> Attachments: chicken_wings
+
+### Flag
+
+flag{e0791ce68f718188c0378b1c0a3bdc9e}
+
+### Solution
+
+```console
+root@kali:~/ctf/HuntressCTF# file chicken_wings
+chicken_wings: Unicode text, UTF-8 text, with no line terminators
+
+root@kali:~/ctf/HuntressCTF# cat chicken_wings
+♐●♋♑❀♏📁🖮🖲📂♍♏⌛🖰♐🖮📂🖰📂🖰🖰♍📁🗏🖮🖰♌📂♍📁♋🗏♌♎♍🖲♏❝
+```
+
+Used [Wingdings Font Translator](https://www.dcode.fr/wingdings-font), got flag.
+
+## Where am I?
+
+### Description
+
+> Your friend thought using a JPG was a great way to remember how to login to their private server. Can you find the flag?
+>
+> Download the file(s) below.
+>
+> Attachments: PXL_20230922_231845140_2.jpg
+
+### Flag
+
+flag{b11a3f0ef4bc170ba9409c077355bba2}
+
+### Solution
+
+```console
+root@kali:~/ctf/HuntressCTF# file PXL_20230922_231845140_2.jpg
+PXL_20230922_231845140_2.jpg: JPEG image data, Exif standard: [TIFF image data, little-endian, direntries=14, height=4000, description=ZmxhZ3tiMTFhM2YwZWY0YmMxNzBiYTk0MDljMDc3MzU1YmJhMik=, manufacturer=Google, model=Pixel Fold, orientation=upper-left, xresolution=260, yresolution=268, resolutionunit=2, software=HDR+ 1.0.540104767zd, datetime=2023:09:22 19:18:45, GPS-Data, width=3000], baseline, precision 8, 3000x4000, components 3
+
+root@kali:~/ctf/HuntressCTF# echo -ne 'ZmxhZ3tiMTFhM2YwZWY0YmMxNzBiYTk0MDljMDc3MzU1YmJhMik=' | base64 -d | sed -e 's/)/}/'
+flag{b11a3f0ef4bc170ba9409c077355bba2}
+```
