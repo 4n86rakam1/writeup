@@ -1004,3 +1004,118 @@ PXL_20230922_231845140_2.jpg: JPEG image data, Exif standard: [TIFF image data, 
 root@kali:~/ctf/HuntressCTF# echo -ne 'ZmxhZ3tiMTFhM2YwZWY0YmMxNzBiYTk0MDljMDc3MzU1YmJhMik=' | base64 -d | sed -e 's/)/}/'
 flag{b11a3f0ef4bc170ba9409c077355bba2}
 ```
+
+## F12
+
+### Description
+
+> Remember when Missouri got into hacking!?! You gotta be fast to catch this flag!
+>
+> Press the Start button on the top-right to begin this challenge.
+
+### Flag
+
+flag{03e8ba07d1584c17e69ac95c341a2569}
+
+### Solution
+
+```console
+root@kali:~/ctf/HuntressCTF# curl -s http://chal.ctf.games:32522/ | grep -i flag
+                <button type="button" onclick="ctf()" class="btn btn-primary"><h1>Capture The Flag</button>
+            window.open("./capture_the_flag.html", 'Capture The Flag', 'width=400,height=100%,menu=no,toolbar=no,location=no,scrollbars=yes');
+
+root@kali:~/ctf/HuntressCTF# curl -s http://chal.ctf.games:32522/capture_the_flag.html | grep -i flag
+                <button type="button" onclick="ctf()" class="btn btn-success"><h1>Your flag is:<br>
+                  flag{03e8ba07d1584c17e69ac95c341a2569}
+```
+
+## Wimble
+
+### Description
+
+> "Gretchen, stop trying to make fetch happen! It's not going to happen!" - Regina George, Mean Girls
+>
+> Download the files below.
+>
+> Attachments: wimble.7z
+
+### Flag
+
+FLAG{97F33C9783C21DF85D79D613B0B258BD}
+
+### Solution
+
+```console
+root@kali:~/ctf/HuntressCTF# 7z e wimble.7z
+(snip)
+root@kali:~/ctf/HuntressCTF# file fetch
+fetch: Windows imaging (WIM) image v1.13, XPRESS compressed, reparse point fixup
+
+root@kali:~/ctf/HuntressCTF# wimlib-imagex info fetch
+WIM Information:
+----------------
+Path:           fetch
+GUID:           0x2e2668f5d8e16c4f8b3415b70c02fe86
+Version:        68864
+Image Count:    1
+Compression:    XPRESS
+Chunk Size:     32768 bytes
+Part Number:    1/1
+Boot Index:     0
+Size:           6144026 bytes
+Attributes:     Relative path junction
+
+Available Images:
+-----------------
+Index:                  1
+Name:                   Fetch
+Description:
+Directory Count:        1
+File Count:             272
+Total Bytes:            7337140
+Hard Link Bytes:        0
+Creation Time:          Wed May 31 09:31:49 2023 UTC
+Last Modification Time: Wed May 31 09:31:49 2023 UTC
+WIMBoot compatible:     no
+
+root@kali:~/ctf/HuntressCTF# wimlib-imagex dir fetch | less
+
+root@kali:~/ctf/HuntressCTF# wimlib-imagex dir fetch | grep fetch.zip
+/fetch.zip
+
+root@kali:~/ctf/HuntressCTF# wimlib-imagex extract fetch 1 fetch.zip
+[WARNING] Ignoring FILE_ATTRIBUTE_NOT_CONTENT_INDEXED of 1 files
+[WARNING] Ignoring Windows NT security descriptors of 1 files
+[WARNING] Ignoring object IDs of 1 files
+Extracting file data: 2918 KiB of 2918 KiB (100%) done
+Done extracting files.
+
+root@kali:~/ctf/HuntressCTF# file fetch.zip
+fetch.zip: Zip archive data, at least v2.0 to extract, compression method=deflate
+```
+
+Copied fetch.zip to Windows machine. I used PECmd in [Eric Zimmerman's tools](https://ericzimmerman.github.io/#!index.md).
+
+```console
+PS C:\Users\root\Desktop\huntressctf\PECmd> .\PECmd.exe -d C:\Users\root\Desktop\huntressctf\fetch\ --csv .
+(snip))
+---------- Processed C:\Users\root\Desktop\huntressctf\fetch\WWAHOST.EXE-493FDBE7.pf in 0.63386910 seconds ----------
+Processed 257 out of 260 files in 54.5168 seconds
+
+Failed files
+  C:\Users\root\Desktop\huntressctf\fetch\DLLHOST.EXE-5A1B6910.pf ==> (Invalid signature! Should be 'SCCA')
+  C:\Users\root\Desktop\huntressctf\fetch\MOBSYNC.EXE-B307E1CC.pf ==> (Invalid signature! Should be 'SCCA')
+  C:\Users\root\Desktop\huntressctf\fetch\SVCHOST.EXE-04F53BBC.pf ==> (Invalid signature! Should be 'SCCA')
+
+CSV output will be saved to .\20231010133509_PECmd_Output.csv
+CSV time line output will be saved to .\20231010133509_PECmd_Output_Timeline.csv
+```
+
+Greped `20231010133509_PECmd_Output.csv`, got flag.
+
+```console
+$ grep -Eoi 'flag{[0-9a-f]{32}}' 20231010133509_PECmd_Output.csv
+FLAG{97F33C9783C21DF85D79D613B0B258BD}
+```
+
+FYI: Similer CTF Writeup: [CTFtime.org / Hacktober CTF / Prefetch Perfection / Writeup](https://ctftime.org/writeup/24252)
