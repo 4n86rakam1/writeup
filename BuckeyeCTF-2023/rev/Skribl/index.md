@@ -1,12 +1,18 @@
 # Skribl
 
+## Description
+
+> The modern paste service for the New World.
+>
+> <https://skribl.chall.pwnoh.io>
+>
+> Downloads: dist.zip
+
 ## Flag
 
 bctf{wHy_d0_w3_Ne3d_s0_m@ny_N0T3$_aNyW@y}
 
-## Solution
-
-solver-skribl.py
+## solver.py
 
 ```python
 import math
@@ -74,7 +80,7 @@ flag found.
 bctf{wHy_d0_w3_Ne3d_s0_m@ny_N0T3$_aNyW@y}
 ```
 
-## Description
+## Solution
 
 provided stuff:
 
@@ -115,7 +121,7 @@ Flag is set to enviornment variable, however, it is not used in any Python code.
 
 Since backend.py is not included in dist.zip, compile `__pycache__/backend.cpython-313.pyc` to see the process in backend.py.
 
-I see `__pycache__/backend.cpython-313.pyc` was generated with Python 3.13 since it's staretd from `eb 0d 0d 0a`, 
+I see `__pycache__/backend.cpython-313.pyc` was generated with Python 3.13 since it's staretd from `eb 0d 0d 0a`,
 
 ```console
 root@kali:~/ctf/buckeyectf-2023/rev/Skribl# hexdump -C -n 4 dist/chal/__pycache__/backend.cpython-313.pyc
@@ -135,7 +141,6 @@ Install Python 3.13-dev and I can decompile by using [`show_pyc.py`](https://git
 <details><summary>decompile with coveragepy in Python 3.13-dev</summary>
 
 [coveragepy/lab/show_pyc.py at coverage-5.6b1 · nedbat/coveragepy](https://github.com/nedbat/coveragepy/blob/coverage-5.6b1/lab/show_pyc.py)
-
 
 ```console
 root@kali:~/ctf/buckeyectf-2023/rev/Skribl# git clone https://github.com/nedbat/coveragepy.git && cd coveragepy
@@ -378,16 +383,19 @@ ExceptionTable:
 </details>
 
 backend.py processing:
+
 - `create_skribl` function: generate key
+
   ```python
   alphabet = string.ascii_lowercase + string.ascii_uppercase + string.digits
   key = "".join([random.choice(alphabet) for i in range(40)])
   ```
+
 - `init_backend` function:
   - `random.seed(math.floor(time.time()))`: the server startup datetime is used as seed
   - I guess there is dictionary `{key: [os.environ['FLAG'], 'rene'}`
 
-I can calculate the server startup datetime from `stime = moment.duration(11606, 'seconds');` in https://skribl.chall.pwnoh.io/:
+I can calculate the server startup datetime from `stime = moment.duration(11606, 'seconds');` in <https://skribl.chall.pwnoh.io/>:
 
 ```html
    <script>
@@ -398,7 +406,7 @@ I can calculate the server startup datetime from `stime = moment.duration(11606,
     </script>
 ```
 
-![skribl-server-start.png](./img/skribl-server-start.png ) 
+![skribl-server-start.png](./img/skribl-server-start.png )
 
 Thus, I can retrieve the flag by determining the server startup datetime, implementing a Python script that does the same thing, generating and accessing the key.
 
