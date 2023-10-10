@@ -1,6 +1,6 @@
 # Array of Sunshine
 
-## Descriptio
+## Description
 
 > Sunshine on my shoulders makes me happy...
 > Haiku to Sunshine - ChatGPT

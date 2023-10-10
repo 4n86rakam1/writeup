@@ -422,7 +422,7 @@ and create Morse code, and decode it with `From Morse Code` operation in [CyberC
 - `a6c72cba5493ee5ba881b553e21c019d`: `- .... .-. . .`: THREE
 - `d54b19971e9e3825ddfe17abe65644b8`: `-.-- .- -. -.- . .`: YANKEE
 
-Then, create mapping and concatnate it.
+Then, create mapping and concatenate it.
 
 concatenate-mapping.py
 
