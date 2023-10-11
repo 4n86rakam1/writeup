@@ -27,6 +27,8 @@
 
 - [DDR](./scripting/DDR/index.md)
 - [SimonProgrammer 1](./scripting/SimonProgrammer_1/index.md)
+- [SimonProgrammer 2](./scripting/SimonProgrammer_2/index.md)
+- [SimonProgrammer 3](./scripting/SimonProgrammer_3/index.md)
 
 ### Web
 
