@@ -39,3 +39,4 @@
 
 - [Flock of Seagulls](./pwn/Flock_of_Seagulls/index.md)
 - [Array of Sunshine](./pwn/Array_of_Sunshine/index.md)
+- [Bug Spray](pwn/Bug_Spray/index.md)
