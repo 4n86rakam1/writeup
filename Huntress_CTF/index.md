@@ -1185,3 +1185,60 @@ eyJyZWNpcGUiOiAiTWFnaWMgQ29va2llcyIsICJ0aW1lIjogIjEvMS8yMDAwLCAwMDowMDowMCJ9
 root@kali:~/ctf/HuntressCTF# curl -i -s -k -b $'in_oven=eyJyZWNpcGUiOiAiTWFnaWMgQ29va2llcyIsICJ0aW1lIjogIjEvMS8yMDAwLCAwMDowMDowMCJ9' $'http://chal.ctf.games:30484/' | grep -Eo 'flag\{[0-9a-f]{32}\}'
 flag{c36fb6ebdbc2c44e6198bf4154d94ed4}
 ```
+
+## Operation Not Found
+
+### Description
+
+> In the boundless web of data, some corners echo louder than others, whispering tales of innovation, deep knowledge, and fierce competition. On the lush landscapes of <https://osint.golf/>, a corner awaits your discovery... where intellect converges with spirit, and where digital foundations stand alongside storied arenas.
+>
+> This is the `chall1` challenge for the "HuntressCTF2023" challenges on <https://osint.golf>. It's a lot like Geoguesser if you have ever played :)
+>
+> - Navigate to OSINT Golf and select the `chall1` challenge.
+> - You will see an interface similar to Google Street View, where you can look around and zoom in on your surroundings. Try and determine your location on the map of the earth!
+> - Move your mouse over the minimap in the bottom-right corner, and scroll to zoom or click and hold to pan around the map.
+> - Click and place your pin-marker on the map where you believe your exact location is. The accuracy radius is 200 meters.
+> - Click **Submit**. If you are incorrect, it will say "not here" on the top left. If you are correct, your flag will be displayed in the top-left corner.
+> - Copy and paste the flag value into the input box below and submit it to solve this challenge!
+>
+> Connect here: <https://osint.golf/HuntressCTF2023-chall1/>
+
+### Flag
+
+ flag{c46b7183c9810ec4ddb31b2fdc6a914c}
+
+### Solution
+
+This challenge is OSINT.
+Cropped out the images of nearby buildings and image searched.
+Found [Crosland Tower](https://news.gatech.edu/news/2019/01/11/georgia-tech-library-opens-refurbished-crosland-tower).
+
+Same Location: <https://maps.app.goo.gl/gR3A9tcTwTy6d57T9>
+
+## Snake Eater
+
+### Description
+
+> Hey Analyst, I've never seen an executable icon that looks like this. I don't like things I'm not familiar with. Can you check it out and see what it's doing?
+>
+> Archive password: infected
+>
+> NOTE, this challenge is based off of a real malware sample. Windows Defender will probably identify it as malicious. It is strongly encouraged you only analyze this inside of a virtual environment separate from any production devices.
+>
+> Download the file(s) below.
+>
+> Attachments: snake_eater.7z
+
+### Flag
+
+flag{d1343a2fc5d8427801dd1fd417f12628}
+
+### Solution
+
+- Download [Process Monitor](https://learn.microsoft.com/en-us/sysinternals/downloads/procmon) and run it
+- Create filter `Process Name`, `is`, `snake_eater.exe`
+  ![snake_eater_procmon1.png](img/snake_eater_procmon1.png)
+- Clear (Ctrl+X) and Capture (Ctrl+E)
+- Run `snake_eater.exe`
+- Search `flag{` and found `C:\Users\root\AppData\Roaming\LibreOffice\4\user\extensions\shared\registry\com.sun.star.comp.deployment.configuration.PackageRegistryBackend\flag{d1343a2fc5d8427801dd1fd417f12628}` path.
+  ![snake_eater_procmon2.png](img/snake_eater_procmon2.png)
