@@ -1242,3 +1242,60 @@ flag{d1343a2fc5d8427801dd1fd417f12628}
 - Run `snake_eater.exe`
 - Search `flag{` and found `C:\Users\root\AppData\Roaming\LibreOffice\4\user\extensions\shared\registry\com.sun.star.comp.deployment.configuration.PackageRegistryBackend\flag{d1343a2fc5d8427801dd1fd417f12628}` path.
   ![snake_eater_procmon2.png](img/snake_eater_procmon2.png)
+
+## Opendir
+
+### Description
+
+> A threat actor exposed an open directory on the public internet! We could explore their tools for some further intelligence. Can you find a flag they might be hiding?
+>
+> NOTE: This showcases genuine malware samples found a real opendir. For domain reputation purposes, this is behind Basic Authentication with credentials: opendir:opendir
+>
+> Press the Start button on the top-right to begin this challenge.
+
+### Flag
+
+flag{9eb4ebf423b4e5b2a88aa92b0578cbd9}
+
+### Solution
+
+Accessed to this challenge URL with `opendir:opendir` credential for Basic Auth.
+
+![opendir_1.png](./img/opendir_1.png)
+
+Downloaded all files with `wget` and greped flag.
+
+```console
+root@kali:~/ctf/HuntressCTF# wget -q -r --http-user=opendir --http-passwd=opendir http://chal.ctf.games:31085/
+
+root@kali:~/ctf/HuntressCTF# grep -oE 'flag{[0-9a-f]{32}}' -R .
+./chal.ctf.games:31085/sir/64_bit_new/oui.txt:flag{9eb4ebf423b4e5b2a88aa92b0578cbd9}
+```
+
+## Under The Bridge
+
+### Description
+
+> Can you find this iconic location?
+>
+> This is the **chall2** challenge for the "HuntressCTF2023" challenges on <https://osint.golf>. It's a lot like Geoguesser if you have ever played :)
+>
+> - Navigate to OSINT Golf and select the **chall2** challenge.
+> - You will see an interface similar to Google Street View, where you can look around and zoom in on your surroundings. Try and determine your location on the map of the earth!
+> - Move your mouse over the minimap in the bottom-right corner, and scroll to zoom or click and hold to pan around the map.
+> - Click and place your pin-marker on the map where you believe your exact location is. The accuracy radius is 200 meters.
+> - Click Submit. If you are incorrect, it will say "not here" on the top left. If you are correct, your flag will be displayed in the top-left corner.
+> - Copy and paste the flag value into the input box below and submit it to solve this challenge!
+>
+>
+> Connect here: <https://osint.golf/HuntressCTF2023-chall2/>
+
+### Flag
+
+flag{fdc8cd4cff2c19e0d1022e78481ddf36}
+
+### Solution
+
+This place is Rick Astley bridge in [the MV](https://youtu.be/dQw4w9WgXcQ?si=JTb6pJncd0hK1qDA&t=8).
+
+Same location: <https://maps.app.goo.gl/VcLg4118jE3SmmgPA>
