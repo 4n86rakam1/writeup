@@ -1299,3 +1299,45 @@ flag{fdc8cd4cff2c19e0d1022e78481ddf36}
 This place is Rick Astley bridge in [the MV](https://youtu.be/dQw4w9WgXcQ?si=JTb6pJncd0hK1qDA&t=8).
 
 Same location: <https://maps.app.goo.gl/VcLg4118jE3SmmgPA>
+
+## Land Before Time
+
+### Description
+
+> This trick is nothing new, you know what to do: iSteg. Look for the tail that's older than time, this Spike, you shouldn't climb.
+>
+> Download the file(s) below.
+>
+> Attachments: dinosaurs1.png
+
+### Flag
+
+flag{da1e2bf9951c9eb1c33b1d2008064fee}
+
+### Solution
+
+Used [iSteg](https://github.com/rafiibrahim8/iSteg/releases/tag/v2.1), got flag.
+
+![land_before_time.png](img/land_before_time.png)
+
+## Opposable Thumbs
+
+### Description
+
+> We uncovered a database. Perhaps the flag is right between your fingertips!
+>
+> NOTE: this flag does NOT follow the standard MD5 hash format, but does have the usual flag{} prefix and suffix.
+>
+> Download the file(s) below.
+>
+> Attachments: thumbcache_256.db
+
+### Flag
+
+flag{human_after_all}
+
+### Solution
+
+Used [Thumbcache Viewer](https://thumbcacheviewer.github.io/), got flag.
+
+![opposable_thumbs.png](img/opposable_thumbs.png)
