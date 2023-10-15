@@ -1341,3 +1341,243 @@ flag{human_after_all}
 Used [Thumbcache Viewer](https://thumbcacheviewer.github.io/), got flag.
 
 ![opposable_thumbs.png](img/opposable_thumbs.png)
+
+## Rock, Paper, Psychic
+
+### Description
+
+> Wanna play a game of rock, paper, scissors against a computer that can read your mind? Sounds fun, right?
+>
+> NOTE: this challenge binary is not malicious, but Windows Defender will likely flag it as malicious anyway. Please don't open it anywhere that you don't want a Defender alert triggering.
+>
+> Download the file(s) below.
+>
+> Attachments: rock_paper_psychic.7z
+
+### Flag
+
+flag{35bed450ed9ac9fcb3f5f8d547873be9}
+
+### Solution
+
+```console
+root@kali:~/ctf/HuntressCTF# 7z e rock_paper_psychic.7z
+(snip)
+root@kali:~/ctf/HuntressCTF# tree .
+.
+├── rock_paper_psychic.7z
+└── rock_paper_psychic.exe
+
+1 directory, 2 files
+
+root@kali:~/ctf/HuntressCTF# wine ./rock_paper_psychic.exe
+[#] Hi! I'm Patch, the Telepathic Computer Program.
+[#] Let's play Rock, Paper, Scissors!
+[#] I should warn you ahead of time, though.
+[#] As I previously mentioned, I'm telepathic. So I can read your mind.
+[#] You won't end up beating me.
+[#] Still want to play? Alright, you've been warned!
+[#] Enter your choice (rock, paper, scissors):
+[>] rock
+[#] I've made my choice! Now let's play!
+[#] Ready?
+[#] ROCK
+[#] PAPER
+[#] SCISSORS
+[#] SHOOT!
+[#] I chose: paper
+[#] You chose: rock
+[#] I win!
+[#] What's so hard to understand? I. CAN. READ. MINDS.
+[?] Do you want to play again? (yes/no)
+[yes/no] > yes
+[#] Enter your choice (rock, paper, scissors):
+[>] paper
+[#] I've made my choice! Now let's play!
+[#] Ready?
+[#] ROCK
+[#] PAPER
+[#] SCISSORS
+[#] SHOOT!
+[#] I chose: scissors
+[#] You chose: paper
+[#] I win!
+[#] What's so hard to understand? I. CAN. READ. MINDS.
+[?] Do you want to play again? (yes/no)
+[yes/no] >
+```
+
+I couldn't win no matter how many times I try.
+I will try to win by modifying the register with the debugger.
+
+1. In Windows, Download [x64gdb](https://x64dbg.com/) ([download link](https://sourceforge.net/projects/x64dbg/files/snapshots/snapshot_2023-10-05_13-38.zip/download>)) and extract the zip archive
+2. Run x64gdb.exe
+3. File > Open and Select `rock_paper_psychic.exe`
+4. Run
+5. Set breakpoint `416BE4`
+6. Run
+7. Enter `rock` (or `paper`, `scissors`) in prompt
+8. Change RAX register
+   ![rock_paper_psychic_1.png ](img/rock_paper_psychic_1.png)
+9. Run
+   ![rock_paper_psychic_2.png](img/rock_paper_psychic_2.png)
+
+## Tragedy Redux
+
+### Description
+
+> We found this file as part of an attack chain that seemed to manipulate file contents to stage a payload. Can you make any sense of it?
+>
+> Archive password: infected
+>
+> Download the file(s) below.
+> Attachments: tragedy_redux.7z
+
+### Flag
+
+flag{63dcc82c30197768f4d458da12f618bc}
+
+### Solution
+
+```console
+root@kali:~/ctf/HuntressCTF/tragedy# 7z -otragedy_redux e tragedy_redux.7z
+(snip)
+root@kali:~/ctf/HuntressCTF/tragedy# tree tragedy_redux
+tragedy_redux
+└── tragedy_redux
+
+1 directory, 1 file
+
+root@kali:~/ctf/HuntressCTF/tragedy# file tragedy_redux/tragedy_redux
+tragedy_redux/tragedy_redux: Zip archive data, made by v4.5, extract using at least v2.0, last modified, last modified Sun, Jan 01 1980 00:00:00, uncompressed size 1453, method=deflate
+
+root@kali:~/ctf/HuntressCTF/tragedy# unzip tragedy_redux/tragedy_redux
+Archive:  tragedy_redux/tragedy_redux
+file #1:  bad zipfile offset (local header sig):  0
+  inflating: _rels/.rels
+  inflating: word/document.xml
+  inflating: word/_rels/document.xml.rels
+  inflating: word/vbaProject.bin
+  inflating: word/theme/theme1.xml
+  inflating: word/_rels/vbaProject.bin.rels
+  inflating: word/vbaData.xml
+  inflating: word/settings.xml
+  inflating: word/styles.xml
+  inflating: word/webSettings.xml
+  inflating: word/fontTable.xml
+  inflating: docProps/core.xml
+  inflating: docProps/app.xml
+
+
+root@kali:~/ctf/HuntressCTF/tragedy# file word/vbaProject.bin
+word/vbaProject.bin: Composite Document File V2 Document, Cannot read section info
+
+root@kali:~/ctf/HuntressCTF/tragedy# git clone https://github.com/DidierStevens/DidierStevensSuite.git
+(snip)
+root@kali:~/ctf/HuntressCTF/tragedy# python3 ./DidierStevensSuite/oledump.py word/vbaProject.bin -v -s 3 > vbaProject.vba
+```
+
+vbaProject.vba
+
+```vba
+Attribute VB_Name = "NewMacros"
+Function Pears(Beets)
+    Pears = Chr(Beets - 17)
+End Function
+
+Function Strawberries(Grapes)
+    Strawberries = Left(Grapes, 3)
+End Function
+
+Function Almonds(Jelly)
+    Almonds = Right(Jelly, Len(Jelly) - 3)
+End Function
+
+Function Nuts(Milk)
+    Do
+    OatMilk = OatMilk + Pears(Strawberries(Milk))
+    Milk = Almonds(Milk)
+    Loop While Len(Milk) > 0
+    Nuts = OatMilk
+End Function
+
+
+Function Bears(Cows)
+    Bears = StrReverse(Cows)
+End Function
+
+Function Tragedy()
+
+    Dim Apples As String
+    Dim Water As String
+
+    If ActiveDocument.Name <> Nuts("131134127127118131063117128116") Then
+        Exit Function
+    End If
+
+    Apples = "129128136118131132121118125125049062118127116049091088107132106104116074090126107132106104117072095123095124106067094069094126094139094085086070095139116067096088106065107085098066096088099121094101091126095123086069106126095074090120078078"
+    Water = Nuts(Apples)
+
+
+    GetObject(Nuts("136122127126120126133132075")).Get(Nuts("104122127068067112097131128116118132132")).Create Water, Tea, Coffee, Napkin
+
+End Function
+
+Sub AutoOpen()
+    Tragedy
+End Sub
+```
+
+Implementing Python version:
+
+solver.py
+
+```python
+def pears(beets):
+    return chr(beets - 17)
+
+
+def strawberries(grapes):
+    return grapes[:3]
+
+
+def almonds(jelly):
+    return jelly[3:]
+
+
+def nuts(milk):
+    oat_milk = ""
+    while len(milk) > 0:
+        oat_milk += pears(int(strawberries(milk)))
+        milk = almonds(milk)
+
+    # same here:
+    # oat_milk = ""
+    # for i in range(0, len(milk), 3):
+    #     oat_milk += chr((int(milk[i : i + 3])) - 17)
+
+    return oat_milk
+
+
+def tragedy():
+    apples = "129128136118131132121118125125049062118127116049091088107132106104116074090126107132106104117072095123095124106067094069094126094139094085086070095139116067096088106065107085098066096088099121094101091126095123086069106126095074090120078078"
+    water = nuts(apples)
+
+    print(water)
+
+
+def auto_open():
+    tragedy()
+
+
+if __name__ == "__main__":
+    auto_open()
+```
+
+```console
+root@kali:~/ctf/HuntressCTF/tragedy# python3 solver.py
+powershell -enc JGZsYWc9ImZsYWd7NjNkY2M4MmMzMDE5Nzc2OGY0ZDQ1OGRhMTJmNjE4YmN9Ig==
+
+root@kali:~/ctf/HuntressCTF/tragedy# echo -ne 'JGZsYWc9ImZsYWd7NjNkY2M4MmMzMDE5Nzc2OGY0ZDQ1OGRhMTJmNjE4YmN9Ig==' | base64 -d
+$flag="flag{63dcc82c30197768f4d458da12f618bc}"
+```
