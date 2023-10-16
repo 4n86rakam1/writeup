@@ -33,3 +33,4 @@
 ### Reverse Engineering
 
 - [Take some Bytes](./Reverse_Engineering/Take_some_Bytes/index.md)
+- [Subject Encallment](./Reverse_Engineering/Subject_Encallment/index.md)
