@@ -29,3 +29,7 @@
 - [Another Discord](./Misc/Another_Discord/index.md)
 - [Landbox](./Misc/Landbox/index.md)
 - [Nuclei](./Misc/Nuclei/index.md)
+
+### Reverse Engineering
+
+- [Take some Bytes](./Reverse_Engineering/Take_some_Bytes/index.md)
