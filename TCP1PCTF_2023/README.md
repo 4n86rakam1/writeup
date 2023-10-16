@@ -12,3 +12,4 @@
 
 - [A simple website](./Web/A_simple_website/index.md)
 - [Un Secure](./Web/Un_Secure/index.md)
+- [Latex](./Web/Latex/index.md)
