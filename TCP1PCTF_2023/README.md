@@ -24,3 +24,4 @@
 ### Misc
 
 - [Sanity Check](./Misc/Sanity_Check/index.md)
+- [Guess My Number](./Misc/Guess_My_Number/index.md)
