@@ -20,3 +20,7 @@
 
 - [Bluffer Overflow](./Pwn/Bluffer_Overflow/index.md)
 - [message](./Pwn/message/index.md)
+
+### Misc
+
+- [Sanity Check](./Misc/Sanity_Check/index.md)
