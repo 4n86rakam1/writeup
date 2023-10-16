@@ -27,3 +27,4 @@
 - [Guess My Number](./Misc/Guess_My_Number/index.md)
 - [zipzipzipzip](./Misc/zipzipzipzip/index.md)
 - [Another Discord](./Misc/Another_Discord/index.md)
+- [Landbox](./Misc/Landbox/index.md)
