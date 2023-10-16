@@ -15,3 +15,7 @@
 - [Latex](./Web/Latex/index.md)
 - [love card](./Web/love_card/index.md)
 - [Bypassssss](./Web/Bypassssss/index.md)
+
+### Pwn
+
+- [Bluffer Overflow](./Pwn/Bluffer_Overflow/index.md)
