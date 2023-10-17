@@ -1581,3 +1581,262 @@ powershell -enc JGZsYWc9ImZsYWd7NjNkY2M4MmMzMDE5Nzc2OGY0ZDQ1OGRhMTJmNjE4YmN9Ig==
 root@kali:~/ctf/HuntressCTF/tragedy# echo -ne 'JGZsYWc9ImZsYWd7NjNkY2M4MmMzMDE5Nzc2OGY0ZDQ1OGRhMTJmNjE4YmN9Ig==' | base64 -d
 $flag="flag{63dcc82c30197768f4d458da12f618bc}"
 ```
+
+## Rogue Inbox
+
+### Description
+
+> You've been asked to audit the Microsoft 365 activity for a recently onboarded as a customer of your MSP.
+>
+> Your new customer is afraid that Debra was compromised. We received logs exported from Purview... can you figure out what the threat actor did? It might take some clever log-fu!
+>
+> Download the file(s) below.
+> Attachments: purview.csv
+
+### Flag
+
+flag{24c4230fa7d50eef392b2c850f74b0f6}
+
+### Solution
+
+```console
+root@kali:~/ctf/HuntressCTF# grep flag@ctf.com purview.csv | grep -o '757cb79-dd91-4555-a45e-520c2525d932\\\\[a-zA-Z0-9{}]' | rev | cut -c1 | tr -d '\n'
+flag{24c4230fa7d50eef392b2c850f74b0f6}
+```
+
+## M Three Sixty Five
+
+In `M Three Sixty Five` challenge series, it provides the environment in which [AADInternals](https://aadinternals.com/aadinternals/) was setup.
+
+### M Three Sixty Five - Start Here
+
+#### Description
+
+> M Three Sixty Five - Start Here
+>
+> NOTE: This is the challenge portal that will start the deployable container environment for the "M Three Sixty Five" challenge set below.
+>
+> There is no flag for this challenge itself.
+>
+> Connect with SSH, with username user and SSH password userpass. Your syntax may look like: ssh <user@chal.ctf.games> -p [PORTNUMBER]
+>
+> When you connect to the session for the very first time, you will be authenticated into a Microsoft 365 environment. WARNING: Once you disconnect, you will need to restart your container to reauthenticate Press the Start button on the top-right to begin this challenge.
+
+### M Three Sixty Five - General Info
+
+#### Description
+
+> Welcome to our hackable M365 tenant! Can you find any juicy details, like perhaps the street address this organization is associated with?
+
+#### Flag
+
+flag{dd7bf230fde8d4836917806aff6a6b27}
+
+#### Solution
+
+```console
+PS /home/user> Get-AADIntTenantDetails
+
+odata.type                                : Microsoft.DirectoryServices.TenantDetail
+objectType                                : Company
+objectId                                  : 05985beb-42bc-4c24-bf49-c1730a825406
+deletionTimestamp                         :
+assignedPlans                             : {@{assignedTimestamp=09/16/2023 06:40:21; capabilityStatus=Enabled; service=exchange; servicePlanId=9f431833-0334-42de-a7dc-70aa40db46db}, @{assignedTimestamp=09/16/2023 06:40:21; capabilitySta
+                                            tus=Enabled; service=exchange; servicePlanId=5136a095-5cf0-4aff-bec3-e84448b38ea5}, @{assignedTimestamp=09/16/2023 06:40:17; capabilityStatus=Enabled; service=M365LabelAnalytics; servicePlanId=
+                                            d9fa6af4-e046-4c89-9226-729a0786685d}, @{assignedTimestamp=09/16/2023 06:40:19; capabilityStatus=Enabled; service=MicrosoftCommunicationsOnline; servicePlanId=0feaeb32-d00e-4d66-bd5a-43b5b83db8
+                                            2c}…}
+authorizedServiceInstance                 : {exchange/namprd04-012-01, ccibotsprod/NA001, YammerEnterprise/NA030, WhiteboardServices/NA001…}
+city                                      : Ellicott City
+cloudRtcUserPolicies                      :
+companyLastDirSyncTime                    :
+companyTags                               : {o365.microsoft.com/startdate=638304432108764015, azure.microsoft.com/developer365=active, o365.microsoft.com/version=15, o365.microsoft.com/signupexperience=GeminiSignUpUI}
+compassEnabled                            :
+country                                   :
+countryLetterCode                         : US
+dirSyncEnabled                            :
+displayName                               : HuntressCTF
+isMultipleDataLocationsForServicesEnabled :
+marketingNotificationEmails               : {}
+postalCode                                : 21043
+preferredLanguage                         : en
+privacyProfile                            :
+provisionedPlans                          : {@{capabilityStatus=Enabled; provisioningStatus=Success; service=exchange}, @{capabilityStatus=Enabled; provisioningStatus=Success; service=exchange}, @{capabilityStatus=Enabled; provisioningSt
+                                            atus=Success; service=exchange}, @{capabilityStatus=Enabled; provisioningStatus=Success; service=exchange}…}
+provisioningErrors                        : {}
+releaseTrack                              :
+replicationScope                          : NA
+securityComplianceNotificationMails       : {}
+securityComplianceNotificationPhones      : {}
+selfServePasswordResetPolicy              :
+state                                     : MD
+street                                    : flag{dd7bf230fde8d4836917806aff6a6b27}
+technicalNotificationMails                : {huntressctf@outlook.com}
+telephoneNumber                           : 8005555555
+tenantType                                :
+createdDateTime                           : 09/16/2023 06:40:09
+verifiedDomains                           : {@{capabilities=Email, OfficeCommunicationsOnline; default=True; id=000520000FC960F2; initial=True; name=4rhdc6.onmicrosoft.com; type=Managed}}
+windowsCredentialsEncryptionCertificate   :
+```
+
+### M Three Sixty Five - Conditional Access
+
+#### Description
+
+> This tenant looks to have some odd [Conditional Access Policies](https://learn.microsoft.com/en-us/azure/active-directory/conditional-access/overview). Can you find a weird one?
+
+#### Flag
+
+flag{d02fd5f79caa273ea535a526562fd5f7}
+
+#### Solution
+
+```console
+PS /home/user> Get-AADIntConditionalAccessPolicies
+
+odata.type          : Microsoft.DirectoryServices.Policy
+objectType          : Policy
+objectId            : 668225f8-1b04-4c50-ad93-a96234c9e630
+deletionTimestamp   :
+displayName         : flag{d02fd5f79caa273ea535a526562fd5f7}
+keyCredentials      : {}
+policyType          : 18
+policyDetail        : {{"Version":1,"CreatedDateTime":"2023-10-16T15:23:45.8269524Z","ModifiedDateTime":"2023-10-16T15:38:14.8630673Z","State":"Enabled","Conditions":{"Applications":{"Include":[{"Applications":["None"]}]},"Users":{"Inclu
+                      de":[{"Users":["None"]}]}},"Controls":[{"Control":["Mfa"]}],"EnforceAllPoliciesForEas":true,"IncludeOtherLegacyClientTypeForEvaluation":true}}
+policyIdentifier    :
+tenantDefaultPolicy :
+
+odata.type          : Microsoft.DirectoryServices.Policy
+objectType          : Policy
+objectId            : 781fecfa-78c7-41b3-9961-fd82132465e3
+deletionTimestamp   :
+displayName         : Default Policy
+keyCredentials      : {}
+policyType          : 18
+policyDetail        : {{"Version":0,"State":"Disabled"}}
+policyIdentifier    : 10/16/2023 15:38:15
+tenantDefaultPolicy : 18
+```
+
+### M Three Sixty Five - Teams
+
+#### Description
+
+> We observed saw some sensitive information being shared over a Microsoft Teams message! Can you track it down?
+
+#### Flag
+
+flag{f17cf5c1e2e94ddb62b98af0fbbd46e1}
+
+#### Solution
+
+<https://aadinternals.com/aadinternals/#get-aadintteamsmessages-t>
+
+```console
+PS /home/user> Get-AADIntTeamsMessages | Format-Table id,content,deletiontime,*type*,DisplayName
+
+Id            Content                                DeletionTime MessageType Type    DisplayName
+--            -------                                ------------ ----------- ----    -----------
+1695838171758 flag{f17cf5c1e2e94ddb62b98af0fbbd46e1}              Text        Message FNU LNU
+```
+
+### M Three Sixty Five - The President
+
+#### Description
+
+> One of the users in this environment seems to have unintentionally left some information in their account details. Can you track down The President?
+
+#### Flag
+
+flag{1e674f0dd1434f2bb3fe5d645b0f9cc3}
+
+#### Solution
+
+```console
+PS /home/user> Get-AADIntUsers | Select UserPrincipalName,ObjectId,ImmutableId
+
+UserPrincipalName                       ObjectId                             ImmutableId
+-----------------                       --------                             -----------
+LeeG@4rhdc6.onmicrosoft.com             0b838a0a-f67c-448b-8731-ee3ddb18a605
+AlexW@4rhdc6.onmicrosoft.com            0ce655b4-3623-4931-ad67-7592e8c6ce9c
+HuntressCTFAdmin@4rhdc6.onmicrosoft.com 183037f1-027d-4206-84af-95106f08e16c
+HackMe@4rhdc6.onmicrosoft.com           32ee9aa5-dc31-4b36-9d38-e514ff8da818
+JohannaL@4rhdc6.onmicrosoft.com         38e85aa3-f8c4-417f-b59b-8163f332640d
+LynneR@4rhdc6.onmicrosoft.com           578075eb-5400-4fe7-a225-cd8e0f3242f8
+HenriettaM@4rhdc6.onmicrosoft.com       6b5d422b-3317-4193-9f38-37b3c700789f
+JoniS@4rhdc6.onmicrosoft.com            718bb614-ccf0-48f8-84a2-8df4f09efa14
+AdeleV@4rhdc6.onmicrosoft.com           a2f01482-575c-46ae-802a-267392b0cd8f
+DiegoS@4rhdc6.onmicrosoft.com           a3527d86-a02c-4cc4-af15-eb89a1825013
+LidiaH@4rhdc6.onmicrosoft.com           ab658cc5-fe15-4a7e-8a87-8dda42818a27
+NestorW@4rhdc6.onmicrosoft.com          c168db1f-588b-4746-aa22-44396fe83c30
+PattiF@4rhdc6.onmicrosoft.com           d15033b7-6556-4bcd-8ec5-0c3f7ff7e9be
+PradeepG@4rhdc6.onmicrosoft.com         e65bc282-d8ea-4018-a5b3-3e3f03cdec35
+GradyA@4rhdc6.onmicrosoft.com           eec05309-74b1-4e89-a379-9e2199ba9826
+MeganB@4rhdc6.onmicrosoft.com           ef935576-05f9-46fd-bf19-995d14926ea1
+IsaiahL@4rhdc6.onmicrosoft.com          f1d16e98-cd61-41d8-afea-399b1a6e6323
+MiriamG@4rhdc6.onmicrosoft.com          fee33a0e-c6cf-4a34-9ed6-6e4c7bf62521
+
+PS /home/user> Get-AADIntUser -UserPrincipalName "PattiF@4rhdc6.onmicrosoft.com"
+
+AlternateEmailAddresses                :
+AlternateMobilePhones                  :
+AlternativeSecurityIds                 :
+BlockCredential                        : false
+City                                   : Louisville
+CloudExchangeRecipientDisplayType      : 1073741824
+Country                                : United States
+Department                             : Executive Management
+DirSyncEnabled                         :
+DirSyncProvisioningErrors              :
+DisplayName                            : Patti Fernandez
+Errors                                 :
+Fax                                    :
+FirstName                              : Patti
+ImmutableId                            :
+IndirectLicenseErrors                  :
+IsBlackberryUser                       : false
+IsLicensed                             : true
+LastDirSyncTime                        :
+LastName                               : Fernandez
+LastPasswordChangeTimestamp            : 2023-09-20T20:54:57Z
+LicenseAssignmentDetails               : LicenseAssignmentDetails
+LicenseReconciliationNeeded            : false
+Licenses                               : Licenses
+LiveId                                 : 10032002F3B32527
+MSExchRecipientTypeDetails             :
+MSRtcSipDeploymentLocator              :
+MSRtcSipPrimaryUserAddress             :
+MobilePhone                            :
+OathTokenMetadata                      :
+ObjectId                               : d15033b7-6556-4bcd-8ec5-0c3f7ff7e9be
+Office                                 : 15/1102
+OverallProvisioningStatus              : PendingInput
+PasswordNeverExpires                   :
+PasswordResetNotRequiredDuringActivate :
+PhoneNumber                            : flag{1e674f0dd1434f2bb3fe5d645b0f9cc3}
+PortalSettings                         :
+PostalCode                             : 40223
+PreferredDataLocation                  :
+PreferredLanguage                      : en-US
+ProxyAddresses                         : ProxyAddresses
+ReleaseTrack                           :
+ServiceInformation                     : ServiceInformation
+SignInName                             : PattiF@4rhdc6.onmicrosoft.com
+SoftDeletionTimestamp                  :
+State                                  : KY
+StreetAddress                          : 9900 Corporate Campus Dr., Suite 3000
+StrongAuthenticationMethods            :
+StrongAuthenticationPhoneAppDetails    :
+StrongAuthenticationProofupTime        :
+StrongAuthenticationRequirements       :
+StrongAuthenticationUserDetails        :
+StrongPasswordRequired                 :
+StsRefreshTokensValidFrom              : 2023-09-20T20:54:57Z
+Title                                  : President
+UsageLocation                          : US
+UserLandingPageIdentifierForO365Shell  :
+UserPrincipalName                      : PattiF@4rhdc6.onmicrosoft.com
+UserThemeIdentifierForO365Shell        :
+UserType                               : Member
+ValidationStatus                       : Healthy
+WhenCreated                            : 2023-09-16T10:24:34Z
+```
