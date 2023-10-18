@@ -1840,3 +1840,103 @@ UserType                               : Member
 ValidationStatus                       : Healthy
 WhenCreated                            : 2023-09-16T10:24:34Z
 ```
+
+## Babel
+
+### Description
+
+> It's babel! Just a bunch of gibberish, right?
+>
+> Download the file below.
+>
+> Attachments: babel
+
+### Flag
+
+flag{b6cfb6656ea0ac92849a06ead582456c}
+
+### Solution
+
+The attached `babel` file is obfuscated C# code.
+
+```csharp
+(snip)
+string YKyumnAOcgLjvK = "lQwSYRxgfBHqNucMsVonkpaTiteDhbXzLPyEWImKAdjZFCOvJGrU";
+Assembly smlpjtpFegEH = Assembly.Load(Convert.FromBase64String(zcfZIEShfvKnnsZ(pTIxJTjYJE, YKyumnAOcgLjvK)));
+MethodInfo nxLTRAWINyst = smlpjtpFegEH.EntryPoint;
+```
+
+At the end, it Base64 decodes and call `Assembly.Load`.
+To see what is happing, I append `Console.WriteLine(zcfZIEShfvKnnsZ(pTIxJTjYJE, YKyumnAOcgLjvK));` to print Base64 encoded string.
+
+Edited `babel`:
+
+```csharp
+            // (snip)
+            string YKyumnAOcgLjvK = "lQwSYRxgfBHqNucMsVonkpaTiteDhbXzLPyEWImKAdjZFCOvJGrU";
+            Console.WriteLine(zcfZIEShfvKnnsZ(pTIxJTjYJE, YKyumnAOcgLjvK));
+            // Assembly smlpjtpFegEH = Assembly.Load(Convert.FromBase64String(zcfZIEShfvKnnsZ(pTIxJTjYJE, YKyumnAOcgLjvK)));
+            // MethodInfo nxLTRAWINyst = smlpjtpFegEH.EntryPoint;
+            // nxLTRAWINyst.Invoke(smlpjtpFegEH.CreateInstance(nxLTRAWINyst.Name), null);
+        }
+    }
+}
+```
+
+compile and run.
+
+```console
+root@kali:~/ctf/HuntressCTF# mcs babel.cs && mono babel.exe | base64 -d > tmp.dat
+
+root@kali:~/ctf/HuntressCTF# file tmp.dat
+tmp.dat: PE32+ executable (console) x86-64 Mono/.Net assembly, for MS Windows, 2 sections
+
+root@kali:~/ctf/HuntressCTF# strings tmp.dat | grep flag
+flag{b6cfb6656ea0ac92849a06ead582456c}
+```
+
+Base64 decoded string is PE32+ executable.
+Got flag by using `strings` command.
+
+## PRESS PLAY ON TAPE
+
+### Description
+
+> While walking home through a dark alley you find an archaic 1980s cassette tape. It has "PRESS PLAY ON TAPE" written on the label. You take it home and play it on your old tape deck. It sounds awful. The noise made you throw your headphones to the floor immedately. You snagged a recording of it for analysis.
+>
+> WARNING: The audio in this file is very loud and obnoxious. Please turn your volume way down before playing.
+>
+> Download the file(s) below.
+>
+> Attachments: pressplayontape.wav
+
+### Flag
+
+flag{32564872d760263d52929ce58cc40071}
+
+### Solution
+
+This solution is based on using 2 tools, [AudioTap](https://wav-prg.sourceforge.io/audiotap.html) and [FinalTAP](https://csdb.dk/release/?id=143638).
+
+Step 1: AudioTap
+
+1. Run audiotap.exe
+1. Create a Tap file
+
+   ![AudioTap](img/press_play_on_tape_AudioTap1.png)
+
+1. Select pressplayontape.wav for wav to tap
+1. Enter File name to save tap file
+
+Step 2: FinalTAP
+
+1. Run FinalTap.exe
+1. File > Open and select tap file created in Step 1
+1. Select `PRG Extraction` tab
+1. Select `C64 ROM-TAPE DATA`
+
+   ![FinalTAP](img/press_play_on_tape_FinalTAP1.png)
+
+### References
+
+- [1530USB](https://www.load64.com/1530usb/)
