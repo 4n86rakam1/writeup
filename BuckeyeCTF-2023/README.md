@@ -15,4 +15,5 @@
 
 ## Web
 
+- [Text Adventure API](./web/Text_Adventure_API/index.md)
 - [area51](./web/area51/index.md)
