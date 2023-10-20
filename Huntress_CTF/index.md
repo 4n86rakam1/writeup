@@ -2071,3 +2071,298 @@ PS C:\Users\root> echo $txt;
 Start-Process "https://youtu.be/561nnd9Ebss?t=16"
 #flag{409537347c2fae01ef9826c2506ac660}#
 ```
+
+## Who is Real?
+
+### Description
+
+> This is not a technical challenge, but it is a good test of your eye!
+>
+> Now we live in a world of generative AI, for better or for worse. The fact of the matter is, threat actors can scheme up fake personas to lure you into a scam or social engineering... so, can you determine which profile picture is real and which is fake?
+>
+> Play a game to train yourself on identifying what stands out for AI generated people. After a streak of 10 correct selections, you'll receive the flag!
+>
+> Press the Start button on the top-right to begin this challenge.
+
+### Flag
+
+flag{10c0e4ed5fcc3259a1b0229264961590}
+
+### Solution
+
+solver.py
+
+```python
+"""
+To get the flag, we need to select the non-AI-generated image from the two given images five times.
+
+The correct choice is in cookie of response for / path.
+Therefore, got the flag as the following step:
+
+1. request to / path
+2. parse "Cookie: session=eyJjb3J(snip)H0.ZTHJiQ.x2iHZfXJCHqECG803pSf6ZIxMjs" cookie.
+   The correct choice is the first element which splited by `.`
+3. request to /validate/{correct_answer}
+4. return 1 and repeat 5 time
+5. got flag
+"""
+
+import requests
+import base64
+import json
+import re
+
+s = requests.Session()
+s.proxies = {"http": "http://127.0.0.1:8080"}
+
+BASE_URL = "http://chal.ctf.games:31410"
+
+resp = s.get(f"{BASE_URL}")
+for _ in range(5):
+    c = resp.cookies["session"].split(".")[0]
+    correct_choice = base64.b64decode(c + "=" * (-len(c) % 4))
+    correct_choice = json.loads(correct_choice)["correct_answer"]
+
+    resp = s.get(f"{BASE_URL}/validate/{correct_choice}")
+
+print(re.findall(r"flag{[0-9a-fA-F]{32}}", resp.text))
+```
+
+There is no need to implement script to automate this, as it only requires at most 5 attempts.
+
+## Thumb Drive
+
+### Description
+
+> People say you shouldn't plug in USB drives! But I discovered this neat file on one that I found in the parking lot...
+>
+> WARNING: Your antivirus solution may raise an alert (this is the 'Malware' category, after all). Please do not attempt this challenge without the usual caution you may take when analyzing malicious software.
+>
+> Download the file(s) below.
+>
+> Attachments: ADATA_128GB.lnk
+
+### Flag
+
+flag{0af2873a74cfa957ccb90cef814cfe3}
+
+### Solution
+
+```console
+root@kali:~/ctf/HuntressCTF# hd ADATA_128GB.lnk
+(snip)
+00000630  00 4d 00 44 00 3c 00 68  00 74 00 74 00 70 00 73  |.M.D.<.h.t.t.p.s|
+00000640  00 3a 00 2f 00 2f 00 74  00 69 00 6e 00 79 00 75  |.:././.t.i.n.y.u|
+00000650  00 72 00 6c 00 2e 00 63  00 6f 00 6d 00 2f 00 61  |.r.l...c.o.m./.a|
+00000660  00 37 00 62 00 61 00 36  00 6d 00 61 00 00 00 00  |.7.b.a.6.m.a....|
+```
+
+There is <https://tinyurl.com/a7ba6ma> URL, and Looking at it.
+This is Google Drive link and there is `usb.txt` text file.
+
+```console
+root@kali:~/ctf/HuntressCTF# cat usb.txt | fold -w1 | sort -u | tr -d '\n'
+=234567ABCDEFGHIJKLMNOPQRSTUVWXYZ
+```
+
+`usb.txt` is Base32 encoded text and decode it.
+
+```console
+root@kali:~/ctf/HuntressCTF# cat usb.txt | base32 -d > test.exe
+
+root@kali:~/ctf/HuntressCTF# file test.exe
+test.exe: PE32 executable (DLL) (GUI) Intel 80386, for MS Windows, 5 sections
+```
+
+This is PE32 executable (32 bit), but I couldn't execute it binary in Windows 10 and also Wine in Kali.
+
+```console
+root@kali:~/ctf/HuntressCTF# wine test.exe
+Application could not be started, or no application associated with the specified file.
+ShellExecuteEx failed: File not found.
+```
+
+I will try to Static Analysis.
+
+<details><summary>_MessageBoxThread@4 function decompiled with Ghidra</summary>
+
+```c
+void _MessageBoxThread@4(void)
+
+{
+  uint uVar1;
+  undefined4 local_160;
+  undefined4 auStack_15c [4];
+  undefined4 uStack_14c;
+  undefined4 uStack_148;
+  undefined4 uStack_144;
+  undefined4 local_140;
+  undefined4 uStack_13c;
+  undefined4 uStack_138;
+  undefined4 uStack_134;
+  undefined4 local_130;
+  undefined4 uStack_12c;
+  undefined4 uStack_128;
+  undefined4 uStack_124;
+  undefined4 local_120;
+  undefined4 uStack_11c;
+  undefined4 uStack_118;
+  undefined4 uStack_114;
+  undefined4 local_110;
+  undefined4 uStack_10c;
+  undefined4 uStack_108;
+  undefined4 uStack_104;
+  undefined4 local_100;
+  undefined4 uStack_fc;
+  undefined4 uStack_f8;
+  undefined4 uStack_f4;
+  undefined4 local_f0;
+  undefined4 uStack_ec;
+  undefined4 uStack_e8;
+  undefined4 uStack_e4;
+  undefined4 local_e0;
+  undefined4 uStack_dc;
+  undefined4 uStack_d8;
+  undefined4 uStack_d4;
+  undefined4 local_d0;
+  undefined4 local_cc;
+  undefined4 local_c8;
+  undefined4 auStack_c4 [4];
+  undefined4 uStack_b4;
+  undefined4 uStack_b0;
+  undefined4 uStack_ac;
+  undefined4 local_a8;
+  undefined4 uStack_a4;
+  undefined4 uStack_a0;
+  undefined4 uStack_9c;
+  undefined4 local_98;
+  undefined4 uStack_94;
+  undefined4 uStack_90;
+  undefined4 uStack_8c;
+  undefined4 local_88;
+  undefined4 uStack_84;
+  undefined4 uStack_80;
+  undefined4 uStack_7c;
+  undefined4 local_78;
+  undefined4 uStack_74;
+  undefined4 uStack_70;
+  undefined4 uStack_6c;
+  undefined4 local_68;
+  undefined4 uStack_64;
+  undefined4 uStack_60;
+  undefined4 uStack_5c;
+  undefined4 local_58;
+  undefined4 uStack_54;
+  undefined4 uStack_50;
+  undefined4 uStack_4c;
+  undefined4 local_48;
+  undefined4 uStack_44;
+  undefined4 uStack_40;
+  undefined4 uStack_3c;
+  undefined4 local_38;
+  undefined4 local_34;
+  byte local_30 [40];
+  uint local_8;
+  
+                    /* 0x1000  2  _MessageBoxThread@4 */
+  local_8 = DAT_10003004 ^ (uint)&stack0xfffffffc;
+  uVar1 = 0;
+  local_160 = 0x84;
+  auStack_15c[0] = 0xc6;
+  auStack_15c[1] = 0xbd;
+  auStack_15c[2] = 0xbf;
+  local_d0 = 0x33;
+  auStack_15c[3] = 0xa8;
+  uStack_14c = 0xd9;
+  uStack_148 = 0x91;
+  uStack_144 = 0x6d;
+  local_cc = 0x26;
+  local_140 = 8;
+  uStack_13c = 0xb;
+  uStack_138 = 0x4b;
+  uStack_134 = 0xe6;
+  local_38 = 0x57;
+  local_130 = 0xb3;
+  uStack_12c = 0xcb;
+  uStack_128 = 0x92;
+  uStack_124 = 0xde;
+  local_34 = 0x5b;
+  local_120 = 0xa1;
+  uStack_11c = 100;
+  uStack_118 = 0xdf;
+  uStack_114 = 0xf5;
+  local_110 = 0x9c;
+  uStack_10c = 0x75;
+  uStack_108 = 7;
+  uStack_104 = 0xc6;
+  local_100 = 0x35;
+  uStack_fc = 0x10;
+  uStack_f8 = 0xf7;
+  uStack_f4 = 0x5d;
+  local_f0 = 0x98;
+  uStack_ec = 0x56;
+  uStack_e8 = 0x8a;
+  uStack_e4 = 0x16;
+  local_e0 = 0x28;
+  uStack_dc = 8;
+  uStack_d8 = 0x69;
+  uStack_d4 = 0x9b;
+  local_c8 = 0xe2;
+  auStack_c4[0] = 0xaa;
+  auStack_c4[1] = 0xdc;
+  auStack_c4[2] = 0xd8;
+  auStack_c4[3] = 0xd3;
+  uStack_b4 = 0xe9;
+  uStack_b0 = 0xf0;
+  uStack_ac = 0xb;
+  local_a8 = 0x3a;
+  uStack_a4 = 0x33;
+  uStack_a0 = 0x7c;
+  uStack_9c = 0xd5;
+  local_98 = 0xd2;
+  uStack_94 = 0xfc;
+  uStack_90 = 0xa6;
+  uStack_8c = 0xbd;
+  local_88 = 199;
+  uStack_84 = 5;
+  uStack_80 = 0xe6;
+  uStack_7c = 0xc0;
+  local_78 = 0xab;
+  uStack_74 = 0x16;
+  uStack_70 = 100;
+  uStack_6c = 0xa4;
+  local_68 = 0xc;
+  uStack_64 = 0x20;
+  uStack_60 = 0x94;
+  uStack_5c = 0x38;
+  local_58 = 0xfe;
+  uStack_54 = 0x6e;
+  uStack_50 = 0xbb;
+  uStack_4c = 0x22;
+  local_48 = 0x4b;
+  uStack_44 = 0x6e;
+  uStack_40 = 0xc;
+  uStack_3c = 0xa8;
+  do {
+    local_30[uVar1] = *(byte *)(&local_c8 + uVar1) ^ *(byte *)(&local_160 + uVar1);
+    local_30[uVar1 + 1] = *(byte *)(auStack_c4 + uVar1) ^ *(byte *)(auStack_15c + uVar1);
+    uVar1 = uVar1 + 2;
+  } while (uVar1 < 0x26);
+  MessageBoxA((HWND)0x0,(LPCSTR)local_30,"Your flag is:",0);
+  FUN_100011b7(local_8 ^ (uint)&stack0xfffffffc);
+  return;
+}
+```
+
+</details>
+
+flag is XORed.
+
+Note: variable order
+
+```python
+>>> d1 = [0x84, 0xc6, 0xbd, 0xbf, 0xa8, 0xd9, 0x91, 0x6d, 8, 0xb, 0x4b, 0xe6, 0xb3, 0xcb, 0x92, 0xde, 0xa1, 100, 0xdf, 0xf5, 0x9c, 0x75, 7, 0xc6, 0x35, 0x10, 0xf7, 0x5d, 0x98, 0x56, 0x8a, 0x16, 0x28, 8, 0x69, 0x9b, 0x33, 0x26]
+>>> d2 = [0xe2, 0xaa, 0xdc, 0xd8, 0xd3, 0xe9, 0xf0, 0xb, 0x3a, 0x33, 0x7c, 0xd5, 0xd2, 0xfc, 0xa6, 0xbd, 199, 5, 0xe6, 0xc0, 0xab, 0x16, 100, 0xa4, 0xc, 0x20, 0x94, 0x38, 0xfe, 0x6e, 0xbb, 0x22, 0x4b, 0x6e, 0xc, 0xa8, 0x57, 0x5b]
+>>> ''.join([chr(x1^x2) for x1, x2 in zip(d1, d2)])
+'flag{0af2873a74cfa957ccb90cef814cfe3d}'
+```
