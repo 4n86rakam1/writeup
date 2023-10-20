@@ -29,7 +29,7 @@ const server = Bun.serve({
 
 Looking at source code:
 
-- `expr` parameter in URL path is user controlable
+- `expr` parameter in URL path is user controllable
 - `expr` is executed as `plot(x, ${expr});` in [Octave](https://octave.org/)
 - `expr` must match `/^([x()+*\-\.\^/\d\s]|(\w+\())+$/` regexp
 
