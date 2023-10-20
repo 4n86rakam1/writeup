@@ -18,3 +18,4 @@
 - [Text Adventure API](./web/Text_Adventure_API/index.md)
 - [area51](./web/area51/index.md)
 - [Ohio Instruments 84](web//Ohio_Instruments_84/index.md)
+- [infinity](web/infinity/index.md)
