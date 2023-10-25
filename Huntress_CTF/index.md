@@ -2998,3 +2998,52 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+## Bad Memory
+
+### Description
+
+> A user came to us and said they forgot their password. Can you recover it? The flag is the MD5 hash of the recovered password wrapped in the proper flag format.
+>
+> Download the file below. Note, this is a large 600MB file and may take some time to download.
+>
+> Attachment: image.zip
+
+### Flag
+
+flag{2eb53da441962150ae7d3840444dfdde}
+
+### Solution
+
+Unzipped the attached `image.zip` file, I got `image.bin` file.
+This file is identified as `data` by `file` command.
+This challenge name is `Bad memory` and I guess this file is memory dump so used [volatility3](https://github.com/volatilityfoundation/volatility3).
+
+```console
+root@kali:~/ctf/HuntressCTF# python3 ~/tools/volatility3/vol.py -f image.bin windows.hashdump.Hashdump
+Volatility 3 Framework 2.4.1
+Progress:  100.00               PDB scanning finished
+User    rid     lmhash  nthash
+
+Administrator   500     aad3b435b51404eeaad3b435b51404ee        31d6cfe0d16ae931b73c59d7e0c089c0
+Guest   501     aad3b435b51404eeaad3b435b51404ee        31d6cfe0d16ae931b73c59d7e0c089c0
+DefaultAccount  503     aad3b435b51404eeaad3b435b51404ee        31d6cfe0d16ae931b73c59d7e0c089c0
+WDAGUtilityAccount      504     aad3b435b51404eeaad3b435b51404ee        4cff1380be22a7b2e12d22ac19e2cdc0
+congo   1001    aad3b435b51404eeaad3b435b51404ee        ab395607d3779239b83eed9906b4fb92
+
+root@kali:~/ctf/HuntressCTF# hashcat -m 1000 ab395607d3779239b83eed9906b4fb92 /usr/share/wordlists/rockyou.txt
+hashcat (v6.2.6) starting
+
+(snip)
+
+ab395607d3779239b83eed9906b4fb92:goldfish#
+
+(snip)
+
+root@kali:~/ctf/HuntressCTF# echo -ne 'goldfish#' | md5sum
+2eb53da441962150ae7d3840444dfdde  -
+```
+
+Flag is `flag{2eb53da441962150ae7d3840444dfdde}`.
+
+FYI: I also used [volatility2](https://github.com/volatilityfoundation/volatility), but I could not crack the got hashdump.
