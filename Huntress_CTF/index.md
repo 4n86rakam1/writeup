@@ -3047,3 +3047,37 @@ root@kali:~/ctf/HuntressCTF# echo -ne 'goldfish#' | md5sum
 Flag is `flag{2eb53da441962150ae7d3840444dfdde}`.
 
 FYI: I also used [volatility2](https://github.com/volatilityfoundation/volatility), but I could not crack the got hashdump.
+
+## Discord Snowflake Scramble
+
+### Description
+
+> Someone sent message on a Discord server which contains a flag! They did mention something about being able to embed a list of online users on their own website...
+>
+> Can you figure out how to join that Discord server and see the message?
+>
+> Note: Discord phone verification is NOT required for this challenge.
+>
+> Connect here: <https://discord.com/channels/1156647699362361364/1156648139516817519/1156648284237074552>
+
+### Flag
+
+flag{bb1dcf163212c54317daa7d1d5d0ce35}
+
+### Solution
+
+> They did mention something about being able to embed a list of online users on their own website
+
+I think this is Discord iframe such as the following:
+
+![Discord_Snowflake_Scramble_userlist.png](img/Discord_Snowflake_Scramble_userlist.png)
+
+Google search [`discord iframe embed url`](https://www.google.com/search?hl=en&q=discord+iframe+embed+url), found [CodePen's Advanced Discord Iframe](https://codepen.io/Syera/pen/wvBZrBr).
+This page has the iframe link `https://discordapp.com/widget?id=serverid&theme=dark`.
+The provided Discord link in this challenge is `https://discord.com/channels/1156647699362361364/...`, and therefore the correct iframe link for this challenge is `https://discordapp.com/widget?id=1156647699362361364&theme=dark`.
+
+Accessed to <https://discordapp.com/widget?id=1156647699362361364&theme=dark> and clicked `Join Discord` button.
+Successed to join the Discord Server.
+Got flag in #flag channel.
+
+![Discord_Snowflake_Scramble_flag.png](img/Discord_Snowflake_Scramble_flag.png)
