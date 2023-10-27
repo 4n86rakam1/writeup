@@ -3081,3 +3081,118 @@ Successed to join the Discord Server.
 Got flag in #flag channel.
 
 ![Discord_Snowflake_Scramble_flag.png](img/Discord_Snowflake_Scramble_flag.png)
+
+## BlackCat
+
+### Description
+
+> We've been hit by the infamous BlackCat Ransomware Group! We need you to help restore the encrypted files. Please help! My favorite rock got encrypted and I'm a wreck right now!
+>
+> Archive password: infected
+>
+> NOTE, this challenge is based off of a real malware sample. Windows Defender will probably identify it as malicious. It is strongly encouraged you only analyze this inside of a virtual environment separate from any production devices.
+>
+> Download the file(s) below.
+>
+> Attachments: blackcat.7z
+
+### Flag
+
+flag{092744b55420033c5eb9d609eac5e823}
+
+### Solution
+
+Looking at how the file of `.encry` extension is decryped.
+
+```powershell
+PS C:\Users\root\Desktop\huntressctf\blackcat> echo "AAAAAAAAAAAAAAAAAAAA" | Out-File -Encoding ASCII .\victim-files\test.txt.encry
+PS C:\Users\root\Desktop\huntressctf\blackcat> Format-Hex -Path .\victim-files\test.txt.encry
+
+
+           Path: C:\Users\root\Desktop\huntressctf\blackcat\victim-files\test.txt.encry
+
+           00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
+
+00000000   41 41 41 41 41 41 41 41 41 41 41 41 41 41 41 41  AAAAAAAAAAAAAAAA
+00000010   41 41 41 41 0D 0A                                AAAA..
+
+PS C:\Users\root\Desktop\huntressctf\blackcat> .\DecryptMyFiles.exe
+
+____  _               _____ _  __   _____       _______
+|  _ \| |        /\   / ____| |/ /  / ____|   /\|__   __|
+| |_) | |       /  \ | |    | ' /  | |       /  \  | |
+|  _ <| |      / /\ \| |    |  <   | |      / /\ \ | |
+| |_) | |____ / ____ \ |____| . \  | |____ / ____ \| |
+|____/|______/_/    \_\_____|_|\_\  \_____/_/    \_\_|
+
+Ransomware Group File Decryptor Utility | v1.8.2 | Release Codename: Jiji
+
+
+[*] Once you have paid us, our world-class customer service desk will provide you with a key to decrypt your files.
+[*] Enter the ransomware key to decrypt your files > ABCDEFGH
+[+] Decryption completed for victim-files\Bliss_Windows_XP.png.encry
+[+] Decryption completed for victim-files\Huntress-Labs-Logo-and-Text-Black.png.encry
+[+] Decryption completed for victim-files\flag.txt.encry
+[+] Decryption completed for victim-files\my-favorite-rock.jpg.encry
+[+] Decryption completed for victim-files\test.txt.encry
+[+] Decryption completed for victim-files\the-entire-text-of-hamlet.txt.encry
+PS C:\Users\root\Desktop\huntressctf\blackcat> Format-Hex -Path .\victim-files\test.txt.decry
+
+
+           Path: C:\Users\root\Desktop\huntressctf\blackcat\victim-files\test.txt.decry
+
+           00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
+
+00000000   00 03 02 05 04 07 06 09 00 03 02 05 04 07 06 09  ................
+00000010   00 03 02 05 48 4C                                ....HL
+```
+
+```python
+>>> hex(ord('A') ^ ord('B'))
+'0x3'
+>>> hex(ord('A') ^ ord('C'))
+'0x2'
+>>> hex(ord('A') ^ ord('D'))
+'0x5'
+>>> hex(ord('A') ^ ord('E'))
+'0x4'
+```
+
+It's XOR encription.
+The XOR key length is 8 bytes, since the `00 03 02 05 04 07 06 09` is repeated.
+But I don't know the XOR key so calculate it.
+
+There is PNG encrypted file named `victim-files\Bliss_Windows_XP.png.encry` and PNG file signature is `89 50 4E 47 0D 0A 1A 0A`.
+
+[List of file signatures - Wikipedia](https://en.wikipedia.org/wiki/List_of_file_signatures)
+
+> 89 50 4E 47 0D 0A 1A 0A ‰PNG␍␊␚␊ 0 png Image encoded in the Portable Network Graphics format[21]
+
+```powershell
+PS C:\Users\root\Desktop\huntressctf\blackcat> Format-Hex -Path .\victim-files\Bliss_Windows_XP.png.encry |select -first 1
+
+
+           Path: C:\Users\root\Desktop\huntressctf\blackcat\victim-files\Bliss_Windows_XP.png.encry
+
+           00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
+
+00000000   EA 3F 3D 2A 62 68 75 63 63 6F 73 60 26 2A 2B 3B  ê?=*bhuccos`&*+;
+```
+
+XORed `EA 3F 3D 2A 62 68 75 63` with PNG file signature `89 50 4E 47 0D 0A 1A 0A,`since the file header 8 bytes is `EA 3F 3D 2A 62 68 75 63`.
+
+```python
+>>> ''.join([hex(x ^ y)[2:] for x, y in zip([0xea, 0x3f, 0x3d, 0x2a, 0x62, 0x68, 0x75, 0x63], [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A])])
+'636f736d6f626f69'
+```
+
+XOR key is `636f736d6f626f69`.
+I used CyberChef to XOR decript to decrypt `victim-files\flag.txt.encry`.
+
+[XOR - CyberChef](https://gchq.github.io/CyberChef/#recipe=XOR%28%7B'option':'Hex','string':'636f736d6f626f69'%7D,'Standard',false%29&input=KAoWHQYMCEkOFlMLAwMISQsKAQhPEQBJChtUHk8RDg8GTnlnCQ4ODhhfSl9YVlsLVlpHX19SXFoAWhYPVgZZWVoKEg5aB1dbUBI)
+
+> Keeping my flag here so it's safe!
+>
+> flag{092744b55420033c5eb9d609eac5e823}
+
+Got flag.
