@@ -3291,3 +3291,78 @@ This challenge name is MFAtigue and I guessed the name is maked a play on [MFA F
 Clicked `Send Push Notification` button repeatedly, Got flag.
 
 ![MFAtigue_flag.png](img/MFAtigue_flag.png)
+
+## Snake Eater II
+
+### Description
+
+> Snake Eater II - Revenge of the Snake Eater
+>
+> The Threat Actor must have gotten word that you had no trouble dissecting Snake Eater. They said this one is a bit more... involved.
+>
+> Archive Password: infected
+>
+> Download the file(s) below.
+> Attachments: snake_eaterII.7z
+
+### Flag
+
+flag{be47387ab77251ecf80db1b6725dd7ac}
+
+### Solution
+
+I extracted the attached snake_eaterII.7z file and got snake_eaterII.exe file.
+Because this file is the executable file generated PyInstaller, I used [pyinstxtractor](https://github.com/extremecoders-re/pyinstxtractor) as well as the previous challenge Snake Oil to look at the source code.
+But this source code was obfuscated by [PyArmor](https://github.com/dashingsoft/pyarmor) and I didn't know how to deobfuscate it.
+Thus, I will try Dynamic Analysis instead of Static Analysis to get the flag.
+
+First, I used the [Proces Monitor (Procmon)](https://learn.microsoft.com/en-us/sysinternals/downloads/procmon) to look at what this executable does.
+
+Opened the Procmon and added the filter as "`Process Name` `is` `snake_eaterII.exe` then `Include`", I executed snake_eaterII.exe.
+Then, I got the event called `Operation: CreateFile, Path: C:\Users\root\AppData\Roaming\Microsoft\Windows\PowerShell\flag.txt`.
+The flag.txt is interesting file.
+
+Clicked this event and opened Stack tab, I confirmed CreateFileW is called in `C:\Windows\System32\KernelBase.dll`.
+flag.txt file is created in this event.
+
+![Snake_Eater_II_CreateFileW.png](img/Snake_Eater_II_CreateFileW.png)
+
+Looked at an after events, I confirmed the `Operation: CreateFile, Path: C:\Users\root\AppData\Roaming\Microsoft\Windows\PowerShell\flag.txt` event.
+However, DeleteFileW was called unlike before.
+I think this event is to delete file, therefore, the flag.txt file is immediately deleted after it was created.
+Actually, after the execution of snake_eaterII.exe was completed, I looked at the folder where this file was created, but there was not flag.txt file.
+
+![Snake_Eater_II_DeleteFileW.png](img/Snake_Eater_II_DeleteFileW.png)
+
+Furthermore, executed snake_eaterII.exe several times, I confirmed that flag.txt was created in a different folder.
+It seems that the folder where flag.txt is created is not fixed.
+
+Because the flag.txt will be deleted soon after created, I will try to get the flag.txt before being deleted by using debugger.
+
+First, I opened [x64dbg](https://x64dbg.com/) (hereinafter this window is called x64dbg 1), opened snake_eaterII.exe.
+And executed it several times to see what was being processed, by using such as Step into (F7), Step over (F8) and Execute till return (Ctrl+F9).
+Then, I confirmed ntdll.dll.NTResumeThread was called and the flag.txt file was created in this thread.
+
+Since I debug another thread with another x64dbg, I will try to set a breakpoint before ntdll.dll.NTResumeThread.
+ntdll.dll.NTResumeThread is called by the syscall instruction in the `00007FFCB576DA22` address, so I set a breakpoint at `00007FFCB576DA10` address.
+
+![Snake_Eater_II_set_breakpoint.png](img/Snake_Eater_II_set_breakpoint.png)
+
+I run until this breakpoint in x64dbg 1.
+And I opened another x64dbg (hereinafter called x64dbg 2) and attached the suspended process.
+
+![Snake_Eater_II_attach_process.png](img/Snake_Eater_II_attach_process.png)
+
+Then I stepped over until the `syscall` was executed in x64dbg 1.
+And I proceeded with the steps below.
+
+1. In x64dbg 2, right click Disassembly Window and `Search for` > `All Modules` > `Intermodular calls`
+1. Enter `WriteFile` in the `Search:` form
+1. Select all displayed addresses, right click and select `Set breakpoint on all commands`
+1. Return to x64dbg 2 CPU tab
+   ![Snake_Eater_II_set_breakpoint_WriteFile.png](img/Snake_Eater_II_set_breakpoint_WriteFile.png)
+1. Continue Run or Step Over until flag.txt `WriteFile` completes in Process Monitor
+
+![Snake_Eater_II_flag.png](img/Snake_Eater_II_flag.png)
+
+got flag.
