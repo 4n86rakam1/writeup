@@ -1,4 +1,66 @@
-# Huntress CTF
+# Huntress CTF 2023
+
+- Official URL:
+  - <https://huntress.ctf.games/>
+- October 2, 12:00 PM ET - October 31, 11:59 PM ET
+- New challenges released every day!
+
+This writeup is a short version.
+
+## TOC
+
+- [Notepad](#notepad)
+- [Technical Support](#technical-support)
+- [String Cheese](#string-cheese)
+- [Read The Rules](#read-the-rules)
+- [Query Code](#query-code)
+- [Zerion](#zerion)
+- [Book By Its Cover](#book-by-its-cover)
+- [HumanTwo](#humantwo)
+- [Hot Off The Press](#hot-off-the-press)
+- [BaseFFFF+1](#baseffff1)
+- [Traffic](#traffic)
+- [CaesarMirror](#caesarmirror)
+- [I Wont Let You Down](#i-wont-let-you-down)
+- [Dialtone](#dialtone)
+- [PHP Stager](#php-stager)
+- [Layered Security](#layered-security)
+- [Backdoored Splunk](#backdoored-splunk)
+- [Dumpster Fire](#dumpster-fire)
+- [Comprezz](#comprezz)
+- [Chicken Wings](#chicken-wings)
+- [Where am I?](#where-am-i)
+- [F12](#f12)
+- [Wimble](#wimble)
+- [VeeBeeEee](#veebeeeee)
+- [Baking](#baking)
+- [Operation Not Found](#operation-not-found)
+- [Snake Eater](#snake-eater)
+- [Opendir](#opendir)
+- [Under The Bridge](#under-the-bridge)
+- [Land Before Time](#land-before-time)
+- [Opposable Thumbs](#opposable-thumbs)
+- [Rock, Paper, Psychic](#rock-paper-psychic)
+- [Tragedy Redux](#tragedy-redux)
+- [Rogue Inbox](#rogue-inbox)
+- [M Three Sixty Five](#m-three-sixty-five)
+- [Babel](#babel)
+- [PRESS PLAY ON TAPE](#press-play-on-tape)
+- [Indirect Payload](#indirect-payload)
+- [Texas Chainsaw Massacre: Tokyo Drift](#texas-chainsaw-massacre-tokyo-drift)
+- [Who is Real?](#who-is-real)
+- [Thumb Drive](#thumb-drive)
+- [Operation Eradication](#operation-eradication)
+- [Speakfriend](#speakfriend)
+- [Welcome to the Park](#welcome-to-the-park)
+- [Snake Oil](#snake-oil)
+- [RAT](#rat)
+- [Batchfuscation](#batchfuscation)
+- [Bad Memory](#bad-memory)
+- [Discord Snowflake Scramble](#discord-snowflake-scramble)
+- [BlackCat](#blackcat)
+- [MFAtigue](#mfatigue)
+- [Snake Eater II](#snake-eater-ii)
 
 ## Notepad
 
