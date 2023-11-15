@@ -1,4 +1,4 @@
-# Cake CTF 2023
+# CakeCTF 2023
 
 - Official URL:
   - <https://2023.cakectf.com/>
