@@ -13,3 +13,4 @@
 - [Country DB](web/Country_DB/index.md)
 - [TOWEL](web/TOWEL/index.md)
 - [AdBlog](web/AdBlog/index.md)
+- [OpenBio 2](web/OpenBio_2/index.md)
