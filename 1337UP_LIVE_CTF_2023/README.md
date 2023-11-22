@@ -38,3 +38,7 @@
 ### OSINT
 
 - [Photographs](OSINT/Photographs/index.md) [58 Solves]
+
+### Pwn
+
+- [Hidden](Pwn/Hidden/solver.py) [111 Solves]
