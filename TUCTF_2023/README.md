@@ -14,6 +14,7 @@
 
 ### Forensics
 
+- [What Are You Doing In My Swamp?](Forensics/What_Are_You_Doing_In_My_Swamp/index.md) [209 Solves]
 - [State of the Git](Forensics/State_of_the_Git/index.md) [89 Solves]
 
 ### Misc
