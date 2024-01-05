@@ -1,6 +1,8 @@
 # GlacierCTF 2023
 
-- Official URL: <https://play.glacierctf.com/>
+- Official URL
+  - <https://play.glacierctf.com/>
+  - <https://github.com/LosFuzzys/GlacierCTF2023_writeups>
 - CTF Time: <https://ctftime.org/event/1992>
 - Fri, 24 Nov. 2023, 18:00 UTC — Sun, 26 Nov. 2023, 18:00 UTC
 

@@ -2,7 +2,7 @@
 
 - Official URL:
   - <https://2023.cakectf.com/>
-
+  - <https://github.com/theoremoon/cakectf2023-public>
 - CTF Time: <https://ctftime.org/event/1973>
 - Sat, 11 Nov. 2023, 05:00 UTC — Sun, 12 Nov. 2023, 05:00 UTC
 
