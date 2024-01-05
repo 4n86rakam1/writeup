@@ -21,6 +21,7 @@ Format: Title [Rated difficulty] - Short Solution Description / Tags
 - [ADMINISTRATIVE ORM](WEB/ADMINISTRATIVE_ORM/index.md) [HARD] - UUIDv1 Calculation
 - [THE FLAG API KEY](WEB/THE_FLAG_API_KEY/index.md) [HARD] - SQL Injection with limited attempts
 - [CEREAL LOGGER](WEB/CEREAL_LOGGER/index.md) [HARD] - Insecure Deserialization in PHP, SQLite SQL Injection, RCE
+- [MECHANICAL TURK](WEB/MECHANICAL_TURK/index.md) [HARD] - Mathematical-based CAPTCHA Breaking
 - [HELICOPTER ADMINISTRATORS](WEB/HELICOPTER_ADMINISTRATORS/index.md) [HARD] - XSS, SQLite SQL Injection
 - [MEME UPLOAD SERVICE](WEB/MEME_UPLOAD_SERVICE/index.md) [HARD] - Blind XXE, Phar Deserialization, RCE
 
