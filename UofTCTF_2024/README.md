@@ -1,7 +1,7 @@
 # UofTCTF 2024
 
-- Official URL:
-  - <https://play.uoftctf.org/>
+- Official URL: <https://play.uoftctf.org/>
+- Challenge and writeup: <https://github.com/UofTCTF/uoftctf-2024-chals-public>
 - CTF Time: <https://ctftime.org/event/2219>
 
 ## Writeup
