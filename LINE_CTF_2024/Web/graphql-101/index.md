@@ -280,8 +280,7 @@ const root = {
 
 Therefore, by successfully completing the OTP check within 5 attempts and repeating this process 40 times, we can obtain the flag.
 
-The rate limit can be bypassed by executing multiple GraphQL queries in a single HTTP request.
-In this CTF Challenge, [GraphQL Aliases](https://graphql.org/learn/queries/#aliases) can be used.
+The rate limit can be bypassed by executing multiple GraphQL queries in a single HTTP request, exploiting [Batching Attach](https://lab.wallarm.com/graphql-batching-attack/) using [GraphQL Aliases](https://graphql.org/learn/queries/#aliases).
 
 GraphQL aliases query example:
 
