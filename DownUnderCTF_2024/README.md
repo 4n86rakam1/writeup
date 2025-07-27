@@ -8,22 +8,6 @@ links:
 
 # DownUnderCTF 2024
 
-## Table of Contents
-
-<!-- toc -->
-
-- [misc](#misc)
-  - [tldr please summarise - [1081 Solves]](#tldr-please-summarise---1081-solves)
-- [web](#web)
-  - [parrot the emu - [993 Solves]](#parrot-the-emu---993-solves)
-  - [zoo feedback form - [693 Solves]](#zoo-feedback-form---693-solves)
-  - [co2 - [289 Solves]](#co2---289-solves)
-  - [hah got em - [173 Solves]](#hah-got-em---173-solves)
-  - [i am confusion - [113 Solves]](#i-am-confusion---113-solves)
-  - [sniffy - [58 Solves]](#sniffy---58-solves)
-
-<!-- tocstop -->
-
 ## misc
 
 ### tldr please summarise - [1081 Solves]
