@@ -1,8 +1,14 @@
-# 1753CTF 2024
+---
+start_at: 2024-03-15T21:00Z
+end_at: 2024-03-16T21:00Z
+ctftime: https://ctftime.org/event/2234
+links:
+- https://1753ctf.com/
+- https://github.com/1753c-ctf/1753CTF24-Writeups
+---
 
-- Official URL: <https://1753ctf.com/>
-- CTF Time: <https://ctftime.org/event/2234>
-- Official Writeup: <https://github.com/1753c-ctf/1753CTF24-Writeups>
+
+# 1753CTF 2024
 
 ## Writeup
 

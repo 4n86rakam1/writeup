@@ -1,8 +1,12 @@
-# 1337UP LIVE CTF - Intigriti CTF 2023
+---
+start_at: 2023-11-17T11:59Z
+end_at: 2023-11-18T23:59Z
+ctftime: https://ctftime.org/event/2134
+links:
+- https://ctf.intigriti.io/
+---
 
-- Official URL: <https://ctf.intigriti.io/>
-- CTF Time: <https://ctftime.org/event/2134>
-- Fri, 17 Nov. 2023, 11:59 UTC — Sat, 18 Nov. 2023, 23:59 UTC
+# 1337UP LIVE CTF - Intigriti CTF 2023
 
 ## Writeup
 

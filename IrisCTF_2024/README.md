@@ -1,8 +1,12 @@
-# IrisCTF 2024
+---
+start_at: 2024-01-06T00:00Z
+end_at: 2024-01-08T00:00Z
+ctftime: https://ctftime.org/event/2085
+links:
+- https://2024.irisc.tf/home
+---
 
-- Official URL:
-  - <https://2024.irisc.tf/home>
-- CTF Time: <https://ctftime.org/event/2085>
+# IrisCTF 2024
 
 ## Writeup
 

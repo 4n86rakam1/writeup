@@ -1,11 +1,13 @@
-# TCP1P CTF 2023: First Step Beyond Nusantara
+---
+start_at: 2023-10-13T13:00Z
+end_at: 2023-10-15T13:00Z
+ctftime: https://ctftime.org/event/2001
+links:
+- https://ctf.tcp1p.com/
+- https://github.com/TCP1P/TCP1P-CTF-2023-Challenges
+---
 
-- Official Link:
-  - [TCP1P CTF](https://ctf.tcp1p.com/)
-  - [Challenge and writeup](https://github.com/TCP1P/TCP1P-CTF-2023-Challenges)
-  - [writeup](https://github.com/TCP1P/TCP1P-CTF-2023-Challenges)
-- CTF Time: <https://ctftime.org/event/2001/>
-- Fri, 13 Oct. 2023, 13:00 UTC — Sun, 15 Oct. 2023, 13:00 UTC
+# TCP1P CTF 2023: First Step Beyond Nusantara
 
 ## Writeup
 

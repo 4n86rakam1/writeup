@@ -1,12 +1,13 @@
+---
+start_at: 2023-10-07T14:00Z
+end_at: 2023-10-09T14:00Z
+ctftime: https://ctftime.org/event/2079
+links:
+- https://sunshinectf.org/
+- https://2023.sunshinectf.org/
+---
+
 # SunshineCTF 2023
-
-- Official URL:
-  - <https://sunshinectf.org/>
-  - <https://2023.sunshinectf.org/>
-
-- CTF Time: <https://ctftime.org/event/2079>
-
-- Sat, 07 Oct. 2023, 14:00 UTC - Mon, 09 Oct. 2023, 14:00 UTC
 
 ## Writeup
 

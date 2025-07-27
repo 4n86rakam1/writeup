@@ -1,7 +1,12 @@
-# Wargames.MY 2023 CTF
+---
+start_at: 2023-12-15T16:00Z
+end_at: 2023-12-16T16:00Z
+ctftime: https://ctftime.org/event/2203
+links:
+- https://pro2023.wargames.my/
+---
 
-- Official URL: <https://pro2023.wargames.my/>
-- CTF Time: <https://ctftime.org/event/2203>
+# Wargames.MY 2023 CTF
 
 ## Writeup
 

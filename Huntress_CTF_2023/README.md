@@ -1,10 +1,13 @@
+---
+start_at: 2023-10-02T16:00Z
+end_at: 2023-11-01T03:59Z
+links:
+- https://huntress.ctf.games/
+---
+
 # Huntress CTF 2023
 
-- Official URL:
-  - <https://huntress.ctf.games/>
-- October 2, 12:00 PM ET - October 31, 11:59 PM ET
-- New challenges released every day!
-
+New challenges released every day.
 This writeup is a short version.
 
 ## TOC
@@ -2325,7 +2328,7 @@ void _MessageBoxThread@4(void)
   undefined4 local_34;
   byte local_30 [40];
   uint local_8;
-  
+
                     /* 0x1000  2  _MessageBoxThread@4 */
   local_8 = DAT_10003004 ^ (uint)&stack0xfffffffc;
   uVar1 = 0;
@@ -2939,7 +2942,7 @@ For example, L1 - L5:
 ```bat
 1  @echo off
 2  set bdevq=set
-3  %bdevq% grfxdh= 
+3  %bdevq% grfxdh=
 4  %bdevq%%grfxdh%mbbzmk==
 5  %bdevq%%grfxdh%xeegh%mbbzmk%/
 ```

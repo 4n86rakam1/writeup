@@ -1,11 +1,13 @@
+---
+start_at: 2023-09-15T16:00Z
+end_at: 2023-09-17T16:00Z
+ctftime: https://ctftime.org/event/2087
+links:
+- https://ctf.csaw.io/
+- https://github.com/osirislab/CSAW-CTF-2023-Quals
+---
+
 # CSAW CTF 2023 Quals
-
-- Official URL:
-  - <https://ctf.csaw.io/>
-  - <https://github.com/osirislab/CSAW-CTF-2023-Quals>
-
-- CTF Time: <https://ctftime.org/event/2087>
-- Fri, 15 Sept. 2023, 16:00 UTC — Sun, 17 Sept. 2023, 16:00 UTC
 
 ## Writeup
 

@@ -1,10 +1,13 @@
-# Srdnlen CTF 2023
+---
+start_at: 2023-10-28T08:00Z
+end_at: 2023-10-29T08:00Z
+ctftime: https://ctftime.org/event/2129
+links:
+- https://ctf.srdnlen.it/
+- https://github.com/srdnlen/srdnlenctf-2023_public/
+---
 
-- Official Link:
-  - CTF Site: <https://ctf.srdnlen.it/>
-  - Challenge and Writeup: <https://github.com/srdnlen/srdnlenctf-2023_public/>
-- CTF Time: <https://ctftime.org/event/2129>
-- Sat, 28 Oct. 2023, 08:00 UTC — Sun, 29 Oct. 2023, 08:00 UTC
+# Srdnlen CTF 2023
 
 ## Writeup
 

@@ -1,7 +1,12 @@
-# LINE CTF 2024
+---
+start_at: 2024-03-23T00:00Z
+end_at: 2024-03-24T00:00Z
+ctftime: https://ctftime.org/event/2119
+links:
+- https://score.linectf.me/
+---
 
-- Official URL: <https://score.linectf.me/>
-- CTF Time: <https://ctftime.org/event/2119>
+# LINE CTF 2024
 
 ## Writeup
 

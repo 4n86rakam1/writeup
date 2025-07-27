@@ -1,8 +1,13 @@
-# UofTCTF 2024
+---
+start_at: 2024-01-13T17:00Z
+end_at: 2024-01-15T04:59Z
+ctftime: https://ctftime.org/event/2219
+links:
+- https://play.uoftctf.org/
+- https://github.com/UofTCTF/uoftctf-2024-chals-public
+---
 
-- Official URL: <https://play.uoftctf.org/>
-- Challenge and writeup: <https://github.com/UofTCTF/uoftctf-2024-chals-public>
-- CTF Time: <https://ctftime.org/event/2219>
+# UofTCTF 2024
 
 ## Writeup
 

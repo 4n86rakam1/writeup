@@ -1,8 +1,12 @@
-# snakeCTF 2023
+---
+start_at: 2023-12-09T09:00Z
+end_at: 2023-12-10T09:00Z
+ctftime: https://ctftime.org/event/2158
+links:
+- https://2023.snakectf.org/
+---
 
-- Official URL: <https://2023.snakectf.org/>
-- CTF Time: <https://ctftime.org/event/2158>
-- Sat, 09 Dec. 2023, 09:00 UTC — Sun, 10 Dec. 2023, 09:00 UTC
+# snakeCTF 2023
 
 ## Writeup
 

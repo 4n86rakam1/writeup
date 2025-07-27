@@ -1,8 +1,12 @@
-# 1337UP LIVE CTF 2024
+---
+start_at: 2024-11-15T11:59Z
+end_at: 2024-11-16T23:59Z
+ctftime: https://ctftime.org/event/2446
+links:
+- https://ctf.intigriti.io/
+---
 
-- Official URL: <https://ctf.intigriti.io/>
-- CTF Time: <https://ctftime.org/event/2446/>
-- Fri, 15 Nov. 2024, 11:59 UTC — Sat, 16 Nov. 2024, 23:59 UTC
+# 1337UP LIVE CTF 2024
 
 ## Writeup
 

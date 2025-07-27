@@ -1,8 +1,12 @@
-# TUCTF 2023
+---
+start_at: 2023-12-01T17:00Z
+end_at: 2023-12-03T17:00Z
+ctftime: https://ctftime.org/event/2173
+links:
+- https://ctfd.tuctf.com/
+---
 
-- Official URL: <https://ctfd.tuctf.com/>
-- CTF Time: <https://ctftime.org/event/2173>
-- Fri, 01 Dec. 2023, 17:00 UTC — Sun, 03 Dec. 2023, 17:00 UTC
+# TUCTF 2023
 
 ## Writeup
 
