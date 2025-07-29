@@ -1,0 +1,17 @@
+name: Trigger CI
+on:
+  push:
+    branches:
+      - main
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Trigger CI workflow
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.PAT }}
+          repository: 4n86rakam1/4n86rakam1.github.io
+          event-type: writeup-updated
